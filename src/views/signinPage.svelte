@@ -1,5 +1,15 @@
 <script>
   import Navbar from "../components/Navbar/navbar.svelte";
+  import axios from 'axios';
+
+  let UserEmail;
+  let userPassword;
+
+  function handleSignInfo() {
+    UserEmail = email.value;
+    userPassword = password.value;
+  }
+
 
 </script>
 <main>
@@ -15,13 +25,24 @@
               </div>
               <div class="input-field">
                 <i class="bi bi-envelope"></i>
-                <input type="text" placeholder="E-mail" />
+                <input type="email" placeholder="E-mail" id="email"/>
               </div>
               <div class="input-field">
                 <i class="bi bi-file-lock2"></i>
-                <input type="password" placeholder="Şifre" />
+                <input type="password" placeholder="Şifre" id="password"/>
               </div>
-              <input class="btn solid" type="submit" value="Kayıt Ol" />
+              <input class="btn solid" type="submit" value="Kayıt Ol" on:click={() => {
+                handleSignInfo();
+                axios.post(`https://otbapi.azure-api.net/v1/api/User`, {
+                  email: UserEmail,
+                  password: userPassword
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                });
+              }}/>
               <p class="social-text">Veya sosyal platformlarla kaydolun</p>
               <div class="social-media">
                 <a href="https://www.facebook.com/" class="social-icon" target="blank">
