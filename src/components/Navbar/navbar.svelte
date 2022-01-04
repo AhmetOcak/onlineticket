@@ -3,6 +3,13 @@
     import PageLang from './pageLang.svelte';
     import TlUsd from './tlUsd.svelte';
     import { link } from 'svelte-spa-router';
+    import { currentUser } from '../../store';
+    import { push } from 'svelte-spa-router';
+
+    function delete_cookie(name) {
+        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
 </script>
 
 <main>
@@ -37,7 +44,12 @@
                                 <li><a class="dropdown-item" href="/walletPage" use:link><i class="bi bi-wallet-fill"></i> Cüzdanım</a></li>
                                 <li><a class="dropdown-item" href="/myBillsPage" use:link><i class="bi bi-receipt"></i> Faturalarım</a></li>
                                 <li><a class="dropdown-item" href="/myTravels" use:link><i class="bi bi-geo"></i> Seyahatlerim</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-x-octagon-fill"></i> Hesaptan Çıkış</a></li>
+                                <li><a class="dropdown-item" href="/" on:click={() => {
+                                    delete_cookie("jwt");
+                                    $currentUser = null;
+                                    console.log($currentUser);
+                                    push('/');
+                                }}><i class="bi bi-x-octagon-fill"></i> Hesaptan Çıkış</a></li>
                             </ul>
                             </li>
                         </ul>
