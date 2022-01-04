@@ -21,15 +21,15 @@
               <h2 class="title">Üye Ol</h2>
               <div class="input-field">
                 <i class="bi bi-person-circle"></i>
-                <input type="text" placeholder="Ad Soyad" />
+                <input type="text" placeholder="Ad Soyad" required/>
               </div>
               <div class="input-field">
                 <i class="bi bi-envelope"></i>
-                <input type="email" placeholder="E-mail" id="email"/>
+                <input type="email" placeholder="E-mail" id="email" required/>
               </div>
               <div class="input-field">
                 <i class="bi bi-file-lock2"></i>
-                <input type="password" placeholder="Şifre" id="password"/>
+                <input type="password" placeholder="Şifre" minlength="5" id="password" required/>
               </div>
               <input class="btn solid" type="submit" value="Kayıt Ol" on:click={() => {
                 handleSignInfo();
