@@ -14,9 +14,6 @@
     let citiesUrl = 'https://otbapi.azure-api.net/v1/api/Cities';
     let cities = [];
 
-    let busTravelsUrl = 'https://otbapi.azure-api.net/v1/api/Bus_Travels';
-    let planeTravelsUrl = 'https://otbapi.azure-api.net/v1/api/Plane_Travels';
-
     let date = "";
     let arrivalPlace = "";
     let departurePlace = "";
@@ -41,14 +38,6 @@
         isActive = !isActive;
     }
 
-    async function getTravels(url) { 
-        try {
-            const res = await axios.get(url);
-        }catch(e) {
-            console.log(e);
-        }
-    }
-
     function dateChecker() {
         if(tarih.value == "") {
             return false;
@@ -59,7 +48,6 @@
             return true;
         }
     }
-
 </script>
 
 <main>
@@ -93,7 +81,6 @@
                             <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>Yolculuk Tarihi</label>
                             <input type="date" id="tarih" class="p-3" required />
                             <button type="button" class="btn btn-dark mt-4 p-3 fs-4" id="button" on:click={() => {
-                                getTravels(planeTravelsUrl);
                                 if(dateChecker() == true) {
                                     push('/planeTicketListPage');
                                 }
@@ -128,7 +115,6 @@
                             <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>Yolculuk Tarihi</label>
                             <input type="date" id="tarih" class="p-3" required />
                             <button type="button" class="btn btn-dark mt-4 p-3 fs-4" id="button" on:click={() => {
-                                getTravels(busTravelsUrl);
                                 if(dateChecker() == true) {
                                     push('/busTicketListPage');
                                 }
