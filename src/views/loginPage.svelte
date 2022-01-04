@@ -1,5 +1,41 @@
 <script>
   import Navbar from "../components/Navbar/navbar.svelte";
+  import axios from 'axios';
+  import { currentUser } from '../store';
+
+  let userEmail;
+  let userPassword;
+
+  async function takeCookie() {
+    var cookie = await axios.post(`https://otbapi.azure-api.net/v1/api/Auth/login`, {
+      email: userEmail,
+      password: userPassword
+      },
+      {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    document.cookie = `jwt=${cookie.data.message}`;
+    getUserByCookie();
+  }
+
+  async function getUserByCookie() {
+    let user = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${document.cookie.substring(4)}`);
+    $currentUser = {
+      birthdate: user.data.birthdate,
+      email: user.data.email,
+      firstName: user.data.firstName,
+      gender: user.data.gender,
+      id: user.data.id,
+      lastName: user.data.lastName,
+      password: user.data.password,
+      phoneNumber: user.data.phoneNumber,
+      tcNo: user.data.tcNo,
+      tickets: user.data.tickets
+    };
+    console.log($currentUser);
+  }
 
 </script>
 <main>
@@ -11,13 +47,15 @@
               <h2 class="title">Giriş Yap</h2>
               <div class="input-field">
                 <i class="bi bi-envelope"></i>
-                <input type="text" placeholder="E-mail" />
+                <input bind:value={userEmail} type="email" placeholder="E-mail" required/>
               </div>
               <div class="input-field">
                 <i class="bi bi-file-lock2"></i>
-                <input type="password" placeholder="Şifre" />
+                <input bind:value={userPassword} type="password" placeholder="Şifre" minlength="5" required/>
               </div>
-              <input class="btn solid" type="submit" value="Giriş Yap" />
+              <input class="btn solid" type="button" value="Giriş Yap" on:click={() => {
+                takeCookie();
+              }} />
               <p class="social-text">Veya sosyal platformlarla oturum açın</p>
               <div class="social-media">
                 <a href="https://www.facebook.com/" class="social-icon">
@@ -262,8 +300,6 @@ form.sign-in-form {
   width: 600px;
   margin-left: 150px;
   margin-bottom: 180px;
-  
-
 }
 
 </style>
