@@ -2,6 +2,7 @@
   import Navbar from "../components/Navbar/navbar.svelte";
   import axios from 'axios';
   import { currentUser } from '../store';
+  import { push } from 'svelte-spa-router';
 
   let userEmail;
   let userPassword;
@@ -18,6 +19,7 @@
     });
     document.cookie = `jwt=${cookie.data.message}`;
     getUserByCookie();
+    push('/');
   }
 
   async function getUserByCookie() {
