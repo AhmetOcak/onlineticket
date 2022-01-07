@@ -10,6 +10,16 @@
         document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
 
+    function checkCurrentUser() {
+        if(document.cookie == "") {
+            console.log("giriş yapan yok");
+            return false;
+        }else {
+            console.log("giriş yapan var");
+            return true;
+        }
+    }
+
 </script>
 
 <main>
@@ -20,18 +30,23 @@
                     class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navmenu">
                 <ul class="navbar-nav ms-auto">
+                    {#if checkCurrentUser()}
                     <li class="nav-item">
                         <a href="/ticketCancellationPage" use:link class="nav-link"><i class="bi bi-x-circle pe-1"></i><p>Rezervasyon İptal</p></a>
                     </li>
                     <li class="nav-item">
                         <a href="/reservations" use:link class="nav-link"><i class="bi bi-search pe-1"></i><p>Rezervasyonlarım</p></a>
                     </li>
+                    {/if}
+                    {#if !checkCurrentUser()}
                     <li class="nav-item">
                         <a href="/signinPage" use:link class="nav-link"><i class="bi bi-person-circle pe-1"></i><p>Üye ol</p></a>
                     </li>
                     <li class="nav-item">
                         <a href="/LoginPage" use:link class="nav-link"><i class="bi bi-box-arrow-in-right pe-1"></i><p>Giriş</p></a>
                     </li>
+                    {/if}
+                    {#if checkCurrentUser()}
                     <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown pb-3">
@@ -54,6 +69,7 @@
                             </li>
                         </ul>
                     </div>
+                    {/if}
                     <div class="d-flex flex-row">
                         <li class="nav-item px-3">
                             <PageLang />
