@@ -154,7 +154,6 @@
                         </select> 
                         <select name='expireYY' id='expireYY' required bind:value={year}>
                             <option value=''>Yıl</option>
-                            <option value='21'>2021</option>
                             <option value='22'>2022</option>
                             <option value='23'>2023</option>
                             <option value='24'>2024</option>
