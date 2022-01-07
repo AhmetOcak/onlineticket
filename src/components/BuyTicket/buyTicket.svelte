@@ -2,16 +2,19 @@
 <script>
     import { link } from 'svelte-spa-router';
     import { push } from 'svelte-spa-router';
+    import { selectedTicketId } from "../../store"
+    import { currentUser } from "../../store"
     let masterCard = '../assets/masterCard.png';
     let visaCard = '../assets/visa.png';
     let americanExpress = '../assets/american-express.png';
+    import axios from 'axios';
 
     export let buttonText;
     export let showUserInfo = false;
     export let walletPageButton = false;
 
-    let passengerName;
-    let passengerTc;
+    let ppassengerName;
+    let ppassengerTc;
     let creditCardNo;
     let creditCardUserName;
     let month;
@@ -29,17 +32,39 @@
     }
 
     function checkInfos() {
-        if(passengerName == null || passengerTc == null || creditCardNo == null || creditCardUserName == null || month == "" || year == "" || cvc2 == null) {
+        if(ppassengerName == null || ppassengerTc == null || creditCardNo == null || creditCardUserName == null || month == "" || year == "" || cvc2 == null) {
             console.log("false");
+            console.log($selectedTicketId);
             return false;
         }
         console.log("true");
+        buyTicket();
         return true;
     }
 
+    // sıkıntılı
+    async function buyTicket() {
+        let userId = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${document.cookie.substring(4)}`);
+        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId.data.id}`, {
+            id: userId.data.id,
+            reservations: [
+                {
+                    id: $selectedTicketId,
+                    passengerName: ppassengerName,
+                    passengerTc: String(ppassengerTc)
+                }
+            ],
+        },
+        {
+        headers: {
+        "Content-Type": "application/json"
+        }
+        });
+    }
+
     function result() {
-        console.log(passengerName);
-        console.log(passengerTc);
+        console.log(ppassengerName);
+        console.log(ppassengerTc);
         console.log(creditCardNo);
         console.log(creditCardUserName);
         console.log(month);
@@ -57,11 +82,11 @@
             <div class="">
                 <div class="card-body d-flex flex-column">  
                     <label for="name">Adı Soyadı</label>
-                    <input type="text" id="name" placeholder="Doldurulması zorunludur" bind:value={passengerName} required>
+                    <input type="text" id="name" placeholder="Doldurulması zorunludur" bind:value={ppassengerName} required>
                 </div>
                 <div class="card-body d-flex flex-column">
                     <label for="tc">T.C. Kimlik No</label>
-                    <input type="number" id="tc" placeholder="Doldurulması zorunludur" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" bind:value={passengerTc} required>
+                    <input type="number" id="tc" placeholder="Doldurulması zorunludur" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" bind:value={ppassengerTc} required>
                 </div>
             </div>
             <div class="d-flex justify-content-center ms-3 me-3 mt-2">
@@ -92,7 +117,6 @@
             </div>
         </div>
         {/if}
-        
         <div class="space p-3"></div>
         <div class="card text-dark bg-light mb-3" id="cardInfo">
             <div class="card-header">Ödeme Bilgileri</div>
