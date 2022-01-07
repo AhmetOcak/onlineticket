@@ -1,7 +1,7 @@
 <!-- Ahmet Ocak -->
 <script>
     import { link } from 'svelte-spa-router';
-    
+    import { push } from 'svelte-spa-router';
     let masterCard = '../assets/masterCard.png';
     let visaCard = '../assets/visa.png';
     let americanExpress = '../assets/american-express.png';
@@ -9,6 +9,14 @@
     export let buttonText;
     export let showUserInfo = false;
     export let walletPageButton = false;
+
+    let passengerName;
+    let passengerTc;
+    let creditCardNo;
+    let creditCardUserName;
+    let month;
+    let year;
+    let cvc2;
 
     function checkCurrentUser() {
         if(document.cookie == "") {
@@ -20,6 +28,24 @@
         }
     }
 
+    function checkInfos() {
+        if(passengerName == null || passengerTc == null || creditCardNo == null || creditCardUserName == null || month == "" || year == "" || cvc2 == null) {
+            console.log("false");
+            return false;
+        }
+        console.log("true");
+        return true;
+    }
+
+    function result() {
+        console.log(passengerName);
+        console.log(passengerTc);
+        console.log(creditCardNo);
+        console.log(creditCardUserName);
+        console.log(month);
+        console.log(year);
+        console.log(cvc2);
+    }
 </script>
 
 <main>
@@ -29,13 +55,13 @@
         <div class="card text-dark bg-light mb-3" id="passengerInfo">
             <div class="card-header">Yolcu Bilgileri</div>
             <div class="">
-                <div class="card-body d-flex flex-column">
+                <div class="card-body d-flex flex-column">  
                     <label for="name">Adı Soyadı</label>
-                    <input type="text" id="name" placeholder="Doldurulması zorunludur" required>
+                    <input type="text" id="name" placeholder="Doldurulması zorunludur" bind:value={passengerName} required>
                 </div>
                 <div class="card-body d-flex flex-column">
                     <label for="tc">T.C. Kimlik No</label>
-                    <input type="number" id="tc" placeholder="Doldurulması zorunludur" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" required>
+                    <input type="number" id="tc" placeholder="Doldurulması zorunludur" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" bind:value={passengerTc} required>
                 </div>
             </div>
             <div class="d-flex justify-content-center ms-3 me-3 mt-2">
@@ -51,6 +77,13 @@
                 <button type="button" class="btn btn-success p-3 fs-5" on:click={() => {
                     if(checkCurrentUser()) {
                         console.log("giriş yapan var ödeme yapılabilir");
+                        result();
+                        if(checkInfos()) {
+                            push('/');
+                        }
+                        else {
+                            console.log("bilgileri girilmedi");
+                        }
                     }
                     else {
                         console.log("giriş yapan yok ödeme yapılamaz");
@@ -84,16 +117,16 @@
                 {/if}
                 <div class="card-body d-flex flex-column" style="width: 90%;">
                     <label for="cardNo">Kart Numarası</label>
-                    <input type="number" id="cardNo" placeholder="•••• •••• •••• ••••" maxlength="16" required autocomplete="cc-csc"> 
+                    <input type="number" id="cardNo" placeholder="•••• •••• •••• ••••" maxlength="16" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required autocomplete="cc-csc" bind:value={creditCardNo}> 
                 </div>
                 <div class="card-body d-flex flex-column" style="width: 90%;">
                     <label for="cardUserInfo">Kart Üzerindeki İsim</label>
-                    <input type="text" id="cardUserInfo" placeholder="Kart sahibinin adı ve soyadı" required>
+                    <input type="text" id="cardUserInfo" placeholder="Kart sahibinin adı ve soyadı" required bind:value={creditCardUserName}>
                 </div>
                 <div class="card-body d-flex flex-row justify-content-between" style="width: 80%;">
                     <div class="card-body d-flex flex-column">
                         <label for="last">Son Kullanma Tarihi</label>
-                        <select name='expireMM' id='expireMM' required>
+                        <select name='expireMM' id='expireMM' required bind:value={month}>
                             <option value=''>Ay</option>
                             <option value='01'>Ocak</option>
                             <option value='02'>Şubat</option>
@@ -108,7 +141,7 @@
                             <option value='11'>Kasım</option>
                             <option value='12'>Aralık</option>
                         </select> 
-                        <select name='expireYY' id='expireYY' required>
+                        <select name='expireYY' id='expireYY' required bind:value={year}>
                             <option value=''>Yıl</option>
                             <option value='21'>2021</option>
                             <option value='22'>2022</option>
@@ -120,7 +153,7 @@
                     </div>
                     <div class="card-body d-flex flex-column" style="width: 40%;">
                         <label for="cvc2">CVC2</label>
-                        <input type="number" id="cvc2" placeholder="•••" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="3" required>
+                        <input type="number" id="cvc2" placeholder="•••" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="3" bind:value={cvc2} required>
                     </div>
                 </div>
                 {#if walletPageButton}
@@ -130,8 +163,8 @@
                     </div>
                 {/if}
                 <div class="form-check ms-5 mb-5 me-5">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
                     <label class="form-check-label" for="flexCheckDefault">
+                        <input class="form-check-input" type="checkbox" id="flexCheckDefault" required>
                         <a href="/obfPage" use:link><b>Ön Bilgilendirme Formu'nu</b></a>, <a href="/mssPage" use:link><b>Mesafeli Satış Sözleşmesi'ni</b></a> okudum ve onaylıyorum.
                     </label>
                 </div>
