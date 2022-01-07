@@ -10,6 +10,16 @@
     export let showUserInfo = false;
     export let walletPageButton = false;
 
+    function checkCurrentUser() {
+        if(document.cookie == "") {
+            console.log("giriş yapan yok");
+            return false;
+        }else {
+            console.log("giriş yapan var");
+            return true;
+        }
+    }
+
 </script>
 
 <main>
@@ -38,7 +48,14 @@
                 </p>
             </div>
             <div class="d-flex justify-content-center mt-4">
-                <button type="button" class="btn btn-success p-3 fs-5">{buttonText}</button>
+                <button type="button" class="btn btn-success p-3 fs-5" on:click={() => {
+                    if(checkCurrentUser()) {
+                        console.log("giriş yapan var ödeme yapılabilir");
+                    }
+                    else {
+                        console.log("giriş yapan yok ödeme yapılamaz");
+                    }
+                }}>{buttonText}</button>
             </div>
         </div>
         {/if}
