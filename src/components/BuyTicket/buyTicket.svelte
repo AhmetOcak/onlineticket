@@ -38,6 +38,7 @@
             return false;
         }
         console.log("true");
+        result();
         buyTicket();
         return true;
     }
@@ -45,21 +46,7 @@
     // sıkıntılı
     async function buyTicket() {
         let userId = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${document.cookie.substring(4)}`);
-        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId.data.id}`, {
-            id: userId.data.id,
-            reservations: [
-                {
-                    id: $selectedTicketId,
-                    passengerName: ppassengerName,
-                    passengerTc: String(ppassengerTc)
-                }
-            ],
-        },
-        {
-        headers: {
-        "Content-Type": "application/json"
-        }
-        });
+        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId.data.id}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}`);
     }
 
     function result() {
