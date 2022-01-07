@@ -4,7 +4,6 @@
     import axios from 'axios';
     import { onMount } from 'svelte';
     import { searchRequest } from '../../store';
-
     let busIcon = '../assets/bus.png';
     let planeIcon = '../assets/airplane.png';
 
