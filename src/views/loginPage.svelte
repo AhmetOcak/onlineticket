@@ -1,7 +1,6 @@
 <script>
   import Navbar from "../components/Navbar/navbar.svelte";
   import axios from 'axios';
-  import { currentUser } from '../store';
   import { push } from 'svelte-spa-router';
 
   let userEmail;
@@ -22,21 +21,19 @@
     push('/');
   }
 
+  function getCookie(cookieName) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+      let [key,value] = el.split('=');
+      cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+  }
+
   async function getUserByCookie() {
-    let user = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${document.cookie.substring(4)}`);
-    $currentUser = {
-      birthdate: user.data.birthdate,
-      email: user.data.email,
-      firstName: user.data.firstName,
-      gender: user.data.gender,
-      id: user.data.id,
-      lastName: user.data.lastName,
-      password: user.data.password,
-      phoneNumber: user.data.phoneNumber,
-      tcNo: user.data.tcNo,
-      tickets: user.data.tickets
-    };
-    console.log($currentUser);
+    let userCookie = getCookie("jwt");
+    let user = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${userCookie}`);
+    document.cookie = `userId=${user.data.id}`;
   }
 
 </script>
