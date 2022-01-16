@@ -2,12 +2,16 @@
   import Navbar from "../components/Navbar/navbar.svelte";
   import axios from 'axios';
 
-  let UserEmail;
+  let userEmail;
   let userPassword;
+  let userFirstName;
+  let userLastName;
 
   function handleSignInfo() {
-    UserEmail = email.value;
+    userEmail = email.value;
     userPassword = password.value;
+    userFirstName = firstName.value;
+    userLastName = lastName.value;
   }
 
 
@@ -21,7 +25,11 @@
               <h2 class="title">Üye Ol</h2>
               <div class="input-field">
                 <i class="bi bi-person-circle"></i>
-                <input type="text" placeholder="Ad Soyad" required/>
+                <input type="text" placeholder="Ad" id="firstName" required/>
+              </div>
+              <div class="input-field">
+                <i class="bi bi-person-circle"></i>
+                <input type="text" placeholder="Soyad" id="lastName" required/>
               </div>
               <div class="input-field">
                 <i class="bi bi-envelope"></i>
@@ -34,8 +42,10 @@
               <input class="btn solid" type="submit" value="Kayıt Ol" on:click={() => {
                 handleSignInfo();
                 axios.post(`https://otbapi.azure-api.net/v1/api/User`, {
-                  email: UserEmail,
-                  password: userPassword
+                  email: userEmail,
+                  password: userPassword,
+                  firstName: userFirstName,
+                  lastName: userLastName
                 },
                 {
                   headers: {
