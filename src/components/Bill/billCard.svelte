@@ -5,6 +5,7 @@
     export let ticketID;
     export let billPrice;
     export let date;
+    export let purchasePlace;
 </script>
 
 <main>
@@ -15,7 +16,7 @@
             <p class="card-text">BİLET ID : {ticketID}</p>
             <p class="card-text">Fatura Tutarı : {billPrice} TL</p>
             <p class="card-text">İşlemin Yapıldığı Tarih : {date}</p>
-            <p class="card-text">İşlem Kanalının Adı : onlinebilet.com</p>
+            <p class="card-text">İşlem Kanalının Adı : {purchasePlace}</p>
         </div>
     </div>
 </main>
