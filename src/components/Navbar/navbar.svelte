@@ -3,7 +3,6 @@
     import PageLang from './pageLang.svelte';
     import TlUsd from './tlUsd.svelte';
     import { link } from 'svelte-spa-router';
-    import { currentUser } from '../../store';
     import { push } from 'svelte-spa-router';
 
     function delete_cookie(name) {
@@ -61,8 +60,7 @@
                                 <li><a class="dropdown-item" href="/myTravels" use:link><i class="bi bi-geo"></i> Seyahatlerim</a></li>
                                 <li><a class="dropdown-item" href="/" on:click={() => {
                                     delete_cookie("jwt");
-                                    $currentUser = null;
-                                    console.log($currentUser);
+                                    delete_cookie("userId");
                                     push('/');
                                 }}><i class="bi bi-x-octagon-fill"></i> Hesaptan Çıkış</a></li>
                             </ul>
