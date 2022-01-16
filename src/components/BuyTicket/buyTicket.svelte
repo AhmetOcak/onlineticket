@@ -29,8 +29,19 @@
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
 
-        today = mm + '.' + dd + '.' + yyyy;
+        let currentTime = getTime();
+
+        today = mm + '.' + dd + '.' + yyyy + " " + currentTime;
         return today;
+    }
+
+    function getTime() {
+        var d = new Date();
+        var hour = d.getHours();
+        var minute = d.getMinutes();
+        var seconds = d.getSeconds();
+
+        return hour + ":" + minute + ":" + seconds;
     }
 
     function checkCurrentUser() {
