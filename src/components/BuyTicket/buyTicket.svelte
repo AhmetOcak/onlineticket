@@ -2,13 +2,13 @@
 <script>
     import { link } from 'svelte-spa-router';
     import { push } from 'svelte-spa-router';
-    import { selectedTicketId } from "../../store"
-    import { currentUser } from "../../store"
+    import { selectedTicketId } from "../../store";
+    import axios from 'axios';
+
     let masterCard = '../assets/masterCard.png';
     let visaCard = '../assets/visa.png';
     let americanExpress = '../assets/american-express.png';
-    import axios from 'axios';
-
+    
     export let buttonText;
     export let showUserInfo = false;
     export let walletPageButton = false;
@@ -55,12 +55,22 @@
         return true;
     }
 
-    // sıkıntılı
+    function getCookie(cookieName) {
+        let cookie = {};
+        document.cookie.split(';').forEach(function(el) {
+            let [key,value] = el.split('=');
+            cookie[key.trim()] = value;
+        })
+        return cookie[cookieName];
+    }
+    
     async function buyTicket() {
-        let userId = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${document.cookie.substring(4)}`);
+        let userId = getCookie("userId");
+        let user = await (await axios.get(`https://otbapi.azure-api.net/v1/api/User/${userId}`)).data;
+        let userName = user.firstName + " " + user.lastName;
         ticketInfo[0] = await (await axios.get(`https://otbapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
         let todayDate = getDate();
-        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId.data.id}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${todayDate}/${ticketInfo[0].companyName}/AhmetOcak/${parseInt(ticketInfo[0].price)}`);
+        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
     }
 
     function result() {
