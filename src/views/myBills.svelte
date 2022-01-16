@@ -2,6 +2,31 @@
 <script>
     import Navbar from '../components/Navbar/navbar.svelte';
     import BillCard from '../components/Bill/billCard.svelte';
+    import { onMount } from 'svelte';
+    import axios from 'axios';
+
+    let bills = [];
+
+    function getCookie(cookieName) {
+        let cookie = {};
+        document.cookie.split(';').forEach(function(el) {
+            let [key,value] = el.split('=');
+            cookie[key.trim()] = value;
+        })
+        return cookie[cookieName];
+    }
+
+    onMount(async () => {
+        let userId = getCookie("userId");
+        console.log(userId);
+        try {
+            bills = await (await axios.get(`https://otbapi.azure-api.net/v1/api/User_Bills/${userId}`)).data.bills;
+            console.log(bills);
+        } catch(e) {
+            console.log(e);
+        }
+    });
+
 </script>
 
 <main>
@@ -10,18 +35,13 @@
         <div class="container  d-flex flex-column justify-content-start align-items-center">
             <h1 class="pt-3">Faturalarım</h1>
             <ul class="list-group">
-                <li>
-                    <BillCard companyName="THY" userName="Ahmet Ocak" billPrice="175" date="01.12.2021" ticketID="132"/>
-                </li>
-                <li>
-                    <BillCard companyName="Pegasus" userName="Ahmet Ocak" billPrice="200" date="11.12.2021" ticketID="133"/>
-                </li>
-                <li>
-                    <BillCard companyName="Pamukkale" userName="Ahmet Ocak" billPrice="100" date="23.12.2021" ticketID="134"/>
-                </li>
-                <li>
-                    <BillCard companyName="Isparta Petrol" userName="Ahmet Ocak" billPrice="185" date="30.12.2021" ticketID="135"/>
-                </li>
+                {#each {length: bills.length} as _, i}
+                    <li>
+                        <BillCard companyName={bills[i].companyName} userName={bills[i].userName} billPrice={bills[i].price} date={bills[i].purchaseDate} ticketID={bills[i].id + i} purchasePlace={bills[i].purchasePlace}/>
+                    </li>
+                {:else}
+                    <li>Loading</li>
+                {/each}
             </ul>
         </div>
     </div>
