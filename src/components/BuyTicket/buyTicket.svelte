@@ -21,6 +21,18 @@
     let year;
     let cvc2;
 
+    let ticketInfo = [];
+
+    function getDate() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = mm + '.' + dd + '.' + yyyy;
+        return today;
+    }
+
     function checkCurrentUser() {
         if(document.cookie == "") {
             console.log("giriş yapan yok");
@@ -46,7 +58,9 @@
     // sıkıntılı
     async function buyTicket() {
         let userId = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${document.cookie.substring(4)}`);
-        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId.data.id}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}`);
+        ticketInfo[0] = await (await axios.get(`https://otbapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
+        let todayDate = getDate();
+        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId.data.id}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${todayDate}/${ticketInfo[0].companyName}/AhmetOcak/${parseInt(ticketInfo[0].price)}`);
     }
 
     function result() {

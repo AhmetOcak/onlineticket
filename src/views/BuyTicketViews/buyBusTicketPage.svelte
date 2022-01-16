@@ -18,8 +18,6 @@
             console.log(e);
         }
     });
-
-    
 </script>
 
 <main>
