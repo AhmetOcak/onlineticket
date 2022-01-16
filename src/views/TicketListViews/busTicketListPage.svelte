@@ -31,7 +31,7 @@
                     <TicketCard companyName={searchResult[i].companyName} departureTime={searchResult[i].departureTime} durationTime={searchResult[i].durationTime} arrivalTime={searchResult[i].arrivalTime} price={searchResult[i].price} pushPage={pushPath} showButton={showButton} id={searchResult[i].id}/>
                 </li>
                 {:else}
-                <li>Loading</li>
+                    <li>Loading</li>
                 {/each}
             </ul>
         </div>
