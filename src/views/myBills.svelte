@@ -37,7 +37,7 @@
             <ul class="list-group">
                 {#each {length: bills.length} as _, i}
                     <li>
-                        <BillCard companyName={bills[i].companyName} userName={bills[i].userName} billPrice={bills[i].price} date={bills[i].purchaseDate} ticketID={bills[i].id} purchasePlace={bills[i].purchasePlace}/>
+                        <BillCard companyName={bills[i].companyName} userName={bills[i].userName} billPrice={bills[i].price} date={bills[i].purchaseDate} ticketID={i} purchasePlace={bills[i].purchasePlace}/>
                     </li>
                 {:else}
                     <li>Loading</li>
