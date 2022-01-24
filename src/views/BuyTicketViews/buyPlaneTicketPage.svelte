@@ -33,7 +33,7 @@
                 <li>Loading</li>
                 {/each}
             </div>
-            <BuyTicket buttonText="Ödeme Yap" showUserInfo=true/>
+            <BuyTicket buttonText="Ödeme Yap" showUserInfo=true travelType="1"/>
         </div>
     </div>
 </main>

@@ -12,6 +12,7 @@
     export let buttonText;
     export let showUserInfo = false;
     export let walletPageButton = false;
+    export let travelType;
 
     let ppassengerName;
     let ppassengerTc;
@@ -79,7 +80,11 @@
         let userId = getCookie("userId");
         let user = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User/${userId}`)).data;
         let userName = user.firstName + " " + user.lastName;
-        ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
+        if(travelType == 0) {
+            ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
+        }else {
+            ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Plane_Travels/${$selectedTicketId}`)).data;
+        }
         let todayDate = getDate();
         await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
     }
