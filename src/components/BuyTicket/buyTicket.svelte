@@ -77,11 +77,11 @@
     
     async function buyTicket() {
         let userId = getCookie("userId");
-        let user = await (await axios.get(`https://otbapi.azure-api.net/v1/api/User/${userId}`)).data;
+        let user = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User/${userId}`)).data;
         let userName = user.firstName + " " + user.lastName;
-        ticketInfo[0] = await (await axios.get(`https://otbapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
+        ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
         let todayDate = getDate();
-        await axios.put(`https://otbapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
+        await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
     }
 
     function result() {

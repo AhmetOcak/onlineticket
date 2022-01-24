@@ -41,7 +41,7 @@
               </div>
               <input class="btn solid" type="submit" value="Kayıt Ol" on:click={() => {
                 handleSignInfo();
-                axios.post(`https://otbapi.azure-api.net/v1/api/User`, {
+                axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/User`, {
                   email: userEmail,
                   password: userPassword,
                   firstName: userFirstName,

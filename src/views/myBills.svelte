@@ -20,7 +20,7 @@
         let userId = getCookie("userId");
         console.log(userId);
         try {
-            bills = await (await axios.get(`https://otbapi.azure-api.net/v1/api/User_Bills/${userId}`)).data.bills;
+            bills = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User_Bills/${userId}`)).data.bills;
             console.log(bills);
         } catch(e) {
             console.log(e);

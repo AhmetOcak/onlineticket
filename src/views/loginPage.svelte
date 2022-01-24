@@ -7,7 +7,7 @@
   let userPassword;
 
   async function takeCookie() {
-    var cookie = await axios.post(`https://otbapi.azure-api.net/v1/api/Auth/login`, {
+    var cookie = await axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/Auth/login`, {
       email: userEmail,
       password: userPassword
       },
@@ -32,7 +32,7 @@
 
   async function getUserByCookie() {
     let userCookie = getCookie("jwt");
-    let user = await axios.get(`https://otbapi.azure-api.net/v1/api/Auth/user?cookie=${userCookie}`);
+    let user = await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Auth/user?cookie=${userCookie}`);
     document.cookie = `userId=${user.data.id}`;
   }
 

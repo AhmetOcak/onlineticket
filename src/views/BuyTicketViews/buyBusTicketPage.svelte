@@ -12,7 +12,7 @@
 
     onMount(async () => {
         try{
-            ticketInfo[0] = await (await axios.get(`https://otbapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
+            ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
             console.log(ticketInfo[0]);
         }catch(e) {
             console.log(e);

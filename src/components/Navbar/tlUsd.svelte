@@ -3,7 +3,7 @@
     import axios from 'axios';
     import { onMount } from 'svelte';
 
-    let currencyUrl = 'https://otbapi.azure-api.net/v1/api/Currency_Units';
+    let currencyUrl = 'https://onlineticketbackendapi.azure-api.net/v1/api/Currency_Units';
     let currencies = [];
 
     onMount(async () => {

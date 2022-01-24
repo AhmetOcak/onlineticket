@@ -11,7 +11,7 @@
     let showCard = false;
     let isActive = true;
 
-    let citiesUrl = 'https://otbapi.azure-api.net/v1/api/Cities';
+    let citiesUrl = 'https://onlineticketbackendapi.azure-api.net/v1/api/Cities';
     let cities = [];
 
     let date = "";
