@@ -1,5 +1,29 @@
 <script>
 import Navbar from "../components/Navbar/navbar.svelte";
+import { onMount } from 'svelte';
+import axios from 'axios';
+
+let data = "";
+
+function getCookie(cookieName) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+      let [key,value] = el.split('=');
+      cookie[key.trim()] = value;
+    })
+    
+    return cookie[cookieName];
+  }
+
+  onMount(async () => {
+        try{
+            let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
+            data = (await axios.get(userUrl)).data;
+            console.log(data);
+        }catch(e) {
+            console.log(e);
+        } 
+    });
 
 </script>
 
@@ -23,7 +47,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
                                         <h5>Cinsiyet:</h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
-                                        Erkek
+                                        {data.gender}
                                     </div>
                                 </div>
                                 <hr>
@@ -32,7 +56,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
                                         <h5>İsim:</h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
-                                        Sergen Berke
+                                        {data.firstName}
                                     </div>
                                 </div>
                                 <hr>
@@ -41,7 +65,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
                                         <h5>Soy İsim:</h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
-                                        Altan
+                                        {data.lastName}
                                     </div>
                                 </div>
                                 <hr>
@@ -50,7 +74,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
                                         <h5>Doğum Tarihi:</h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
-                                        14.06.2000
+                                        {data.birthdate}
                                     </div>
                                 </div>
                                 <hr>
@@ -59,7 +83,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
                                         <h5>T.C. Kimlik No:</h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
-                                        00000000000
+                                        {data.tcNo}
                                     </div>
                                     <hr>
                                     <div class="row">
@@ -67,7 +91,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
                                             <h5>E-mail:</h5>
                                         </div>
                                         <div class="col-md-9 text-secondary">
-                                            sergen.altan190@gmail.com
+                                            {data.email}
                                         </div>
                                         <hr>
                                         <div class="row">
@@ -75,7 +99,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
                                                 <h5>Cep Telefonu:</h5>
                                             </div>
                                             <div class="col-md-9 text-secondary">
-                                                0000000000
+                                                {data.phoneNumber}
                                             </div>
                                 </div>
                             </div>
