@@ -1,5 +1,18 @@
 <script>
 import Navbar from "../components/Navbar/navbar.svelte";
+import { onMount } from 'svelte';
+    import axios from 'axios';
+    let data = [];
+    let text = "";
+
+    onMount(async () => {
+        try{
+            let helpUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Help/`;
+            data = (await axios.get(helpUrl)).data;
+        }catch(e) {
+            console.log(e);
+        } 
+    });
 
 </script>
 
@@ -11,30 +24,14 @@ import Navbar from "../components/Navbar/navbar.svelte";
         <div class="blog">
 
             <h2>YARDIM</h2>
-    
+            {#each {length: data.length} as _,i}
             <p class="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, voluptates officia tempora doloremque hic consequuntur, veniam voluptas quidem at odit iure nam voluptate quae quis? Commodi illum tempora placeat, ex molestias voluptatum ut consequuntur laborum ad, vitae soluta reiciendis a non veniam distinctio magnam eos quis ducimus optio officiis. Repellat eum quaerat quo, earum totam officia, commodi, animi consequatur possimus nam quas sequi omnis tempore beatae consequuntur aliquam enim dolorum voluptatum iusto sunt necessitatibus asperiores. Laboriosam asperiores quam natus sequi illo sunt! Sequi, ad. Autem, aperiam perspiciatis! Voluptate doloremque, enim quibusdam omnis amet ad velit dolorum vero labore esse libero?
+                {data[i].text}
             </p>
+            {:else}
+            <p>loading</p>
+            {/each}
 
-            <p class="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, voluptates officia tempora doloremque hic consequuntur, veniam voluptas quidem at odit iure nam voluptate quae quis? Commodi illum tempora placeat, ex molestias voluptatum ut consequuntur laborum ad, vitae soluta reiciendis a non veniam distinctio magnam eos quis ducimus optio officiis. Repellat eum quaerat quo, earum totam officia, commodi, animi consequatur possimus nam quas sequi omnis tempore beatae consequuntur aliquam enim dolorum voluptatum iusto sunt necessitatibus asperiores. Laboriosam asperiores quam natus sequi illo sunt! Sequi, ad. Autem, aperiam perspiciatis! Voluptate doloremque, enim quibusdam omnis amet ad velit dolorum vero labore esse libero?
-            </p>
-            <p class="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, voluptates officia tempora doloremque hic consequuntur, veniam voluptas quidem at odit iure nam voluptate quae quis? Commodi illum tempora placeat, ex molestias voluptatum ut consequuntur laborum ad, vitae soluta reiciendis a non veniam distinctio magnam eos quis ducimus optio officiis. Repellat eum quaerat quo, earum totam officia, commodi, animi consequatur possimus nam quas sequi omnis tempore beatae consequuntur aliquam enim dolorum voluptatum iusto sunt necessitatibus asperiores. Laboriosam asperiores quam natus sequi illo sunt! Sequi, ad. Autem, aperiam perspiciatis! Voluptate doloremque, enim quibusdam omnis amet ad velit dolorum vero labore esse libero?
-            </p>
-            <p class="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, voluptates officia tempora doloremque hic consequuntur, veniam voluptas quidem at odit iure nam voluptate quae quis? Commodi illum tempora placeat, ex molestias voluptatum ut consequuntur laborum ad, vitae soluta reiciendis a non veniam distinctio magnam eos quis ducimus optio officiis. Repellat eum quaerat quo, earum totam officia, commodi, animi consequatur possimus nam quas sequi omnis tempore beatae consequuntur aliquam enim dolorum voluptatum iusto sunt necessitatibus asperiores. Laboriosam asperiores quam natus sequi illo sunt! Sequi, ad. Autem, aperiam perspiciatis! Voluptate doloremque, enim quibusdam omnis amet ad velit dolorum vero labore esse libero?
-            </p>
-            <p class="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, voluptates officia tempora doloremque hic consequuntur, veniam voluptas quidem at odit iure nam voluptate quae quis? Commodi illum tempora placeat, ex molestias voluptatum ut consequuntur laborum ad, vitae soluta reiciendis a non veniam distinctio magnam eos quis ducimus optio officiis. Repellat eum quaerat quo, earum totam officia, commodi, animi consequatur possimus nam quas sequi omnis tempore beatae consequuntur aliquam enim dolorum voluptatum iusto sunt necessitatibus asperiores. Laboriosam asperiores quam natus sequi illo sunt! Sequi, ad. Autem, aperiam perspiciatis! Voluptate doloremque, enim quibusdam omnis amet ad velit dolorum vero labore esse libero?
-            </p>
-            <p class="paragraph">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, voluptates officia tempora doloremque hic consequuntur, veniam voluptas quidem at odit iure nam voluptate quae quis? Commodi illum tempora placeat, ex molestias voluptatum ut consequuntur laborum ad, vitae soluta reiciendis a non veniam distinctio magnam eos quis ducimus optio officiis. Repellat eum quaerat quo, earum totam officia, commodi, animi consequatur possimus nam quas sequi omnis tempore beatae consequuntur aliquam enim dolorum voluptatum iusto sunt necessitatibus asperiores. Laboriosam asperiores quam natus sequi illo sunt! Sequi, ad. Autem, aperiam perspiciatis! Voluptate doloremque, enim quibusdam omnis amet ad velit dolorum vero labore esse libero?
-            </p>
-
-
-    
-    
         </div>
     </div>
 </main>
