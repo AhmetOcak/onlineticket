@@ -42,7 +42,7 @@
         if(tarih.value == "") {
             return false;
         } else {
-            $searchRequest.date = tarih.value;
+            $searchRequest.date = tarih.value + "T00:00:00Z";
             $searchRequest.departurePlace = kalkis.value;
             $searchRequest.arrivalPlace = varis.value;
             return true;
