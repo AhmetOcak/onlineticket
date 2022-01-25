@@ -2,6 +2,30 @@
 <script>
     import Navbar from '../components/Navbar/navbar.svelte';
     import BuyTicket from '../components/BuyTicket/buyTicket.svelte';
+    import { onMount } from 'svelte';
+    import axios from 'axios';
+
+    let balance = 0;
+    
+    function getCookie(cookieName) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+    }
+
+    onMount(async () => {
+        try{
+            let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
+            balance = (await axios.get(walletUrl)).data.balance;
+            console.log(balance);
+        }catch(e) {
+            console.log(e);
+        } 
+    });
+
 </script>
 
 <main>
@@ -18,7 +42,7 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Toplam Bakiye</h5>
-                    <p class="card-text text-primary fs-2">0.00TL</p>
+                    <p class="card-text text-primary fs-2">{balance}</p>
                 </div>
             </div>
         </div>

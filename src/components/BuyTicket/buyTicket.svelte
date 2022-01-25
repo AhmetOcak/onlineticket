@@ -4,6 +4,7 @@
     import { push } from 'svelte-spa-router';
     import { selectedTicketId } from "../../store";
     import axios from 'axios';
+    import { onMount } from 'svelte';
 
     let masterCard = '../assets/masterCard.png';
     let visaCard = '../assets/visa.png';
@@ -23,6 +24,19 @@
     let cvc2;
 
     let ticketInfo = [];
+
+    let currentBalance = 0;
+    let newBalance = 0;
+
+    onMount(async () => {
+        try{
+            let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
+            currentBalance = (await axios.get(walletUrl)).data.balance;
+            console.log(currentBalance);
+        }catch(e) {
+            console.log(e);
+        } 
+    });
 
     function getDate() {
         var today = new Date();
@@ -206,10 +220,10 @@
                         <input type="number" id="cvc2" placeholder="•••" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="3" bind:value={cvc2} required>
                     </div>
                 </div>
-                {#if walletPageButton}
+                {#if walletPageButton} <!-- wallet view button -->
                     <div class="card-body d-flex flex-column" style="width: 90%;">
                         <label for="money">Yüklenecek Tutar</label>
-                        <input type="number" placeholder="örnek: 100" id="money" required>
+                        <input type="number" placeholder="örnek: 100" id="money" bind:value={newBalance} required>
                     </div>
                 {/if}
                 <div class="form-check ms-5 mb-5 me-5">
@@ -219,9 +233,16 @@
                     </label>
                 </div>
             </div>
-            {#if walletPageButton}
+            {#if walletPageButton} <!-- wallet view button -->
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <button type="button" class="btn btn-success btn-sm mb-3" style="width: 20%; height: 4vh;">TL Yükle</button>
+                    <button type="button" class="btn btn-success btn-sm mb-3" style="width: 20%; height: 4vh;" on:click={() => {
+                        if(newBalance == 0 || newBalance == null) {
+                            console.log("invalid balance enter");
+                        }else {
+                            currentBalance = parseInt(currentBalance) + parseInt(newBalance);
+                            axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${currentBalance}`);
+                        }
+                    }}>TL Yükle</button>
                 </div>
             {/if}
         </div>
