@@ -240,7 +240,7 @@
                             console.log("invalid balance enter");
                         }else {
                             currentBalance = parseInt(currentBalance) + parseInt(newBalance);
-                            axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${currentBalance}`);
+                            axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${currentBalance}`).then(push('/'));
                         }
                     }}>TL Yükle</button>
                 </div>
