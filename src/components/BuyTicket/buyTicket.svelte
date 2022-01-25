@@ -100,7 +100,7 @@
             ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Plane_Travels/${$selectedTicketId}`)).data;
         }
         let todayDate = getDate();
-        await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
+        await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${ticketInfo[0].travelType}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
     }
 
     function result() {
