@@ -15,6 +15,7 @@
     onMount(async () => {
       try{
         reservations = (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${getCookie("userId")}`)).data.reservations;
+        console.log(reservations);
         for(let i = 0; i < reservations.length; i++) {
           if(reservations[i].travelTypeId == 0) {
             busTravels[ib] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${reservations[i].id}`)).data;
@@ -39,7 +40,6 @@
         travels[i] = planeTravels[j];
         j +=1;
       }
-      console.log(travels);
     }
 
     function getCookie(cookieName) {
@@ -60,7 +60,7 @@
         <div class="section">
             <ul class="box_seyehatlerim">
                 {#each {length: travels.length} as _, i}
-                  <li><Reservations arrivalPlace={travels[i].arrivalPlace} departurePlace={travels[i].departurePlace} arrivalTime={travels[i].arrivalTime} departureTime={travels[i].departureTime}/></li>
+                  <li><Reservations arrivalPlace={travels[i].arrivalPlace} departurePlace={travels[i].departurePlace} arrivalTime={travels[i].arrivalTime} departureTime={travels[i].departureTime} transport={(travels[i].travelType)} passengerTc={reservations[i].passengerTc} travelId={reservations[i].id}/></li>
                 {:else}
                   <li>Loading</li>
                 {/each}
@@ -103,5 +103,6 @@
     border-radius: 5px;
     border-bottom: 1px solid #999;
     background-color: rgb(255, 255, 255, 0.5);
+    list-style: none;
 }
 </style>

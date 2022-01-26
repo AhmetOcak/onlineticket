@@ -7,7 +7,7 @@
 
     let balance = 0;
     
-    function getCookie(cookieName) {
+    function getCookie(cookieName) {    
     let cookie = {};
     document.cookie.split(';').forEach(function(el) {
         let [key,value] = el.split('=');
