@@ -1,5 +1,10 @@
 <script>
 import Navbar from "../components/Navbar/navbar.svelte";
+import axios from 'axios';
+let user;
+let mail;
+let text;
+
 
 </script>
 
@@ -17,10 +22,21 @@ import Navbar from "../components/Navbar/navbar.svelte";
                 <div class="contact-form">
                     <h2 style="color: black;">Contact Us</h2>
                     <form class="contact" action="" method="post"></form>
-                    <input type="text" name="name" class="text-box" placeholder="Your Name" required>
-                    <input type="email" name="email" class="text-box" placeholder="Your E-mail" required>
-                    <textarea name="message" rows="5" placeholder="Your Message"></textarea>
-                    <input type="submit" name="submit" class="send-button" value="Send">
+                    <input type="text" name="name" class="text-box" placeholder="Your Name" bind:value={user} required>
+                    <input type="email" name="email" class="text-box" placeholder="Your E-mail" bind:value={mail} required>
+                    <textarea name="message" rows="5" placeholder="Your Message" bind:value={text}></textarea>
+                    <input type="submit" name="submit" class="send-button" value="Send" on:click={()=>{
+                        axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/CustomerService`,{
+                            name:user,
+                            email:mail,
+                            message:text
+                        },
+                        {
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                })
+                    }}>
                 </div>
             </div>
         </body>
