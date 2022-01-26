@@ -1,6 +1,8 @@
 <script>
 import Navbar from "../components/Navbar/navbar.svelte";
 import axios from 'axios';
+import { push } from 'svelte-spa-router';
+
 let user;
 let mail;
 let text;
@@ -35,7 +37,8 @@ let text;
                   headers: {
                     "Content-Type": "application/json"
                   }
-                })
+                });
+                push("/");
                     }}>
                 </div>
             </div>
