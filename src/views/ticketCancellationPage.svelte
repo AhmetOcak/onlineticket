@@ -3,25 +3,50 @@
     import Navbar from "../components/Navbar/navbar.svelte";
     import TicketNotFound from "../components/TicketSearchResults/ticketNotFound.svelte";
     import TicketFound from "../components/TicketSearchResults/ticketFound.svelte";
+    import axios from 'axios';
+
+    let reservationId;
+    let tcNo;
+    let result = 0;
+
+
+    function getCookie(cookieName) {    
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+    }
+
+    async function deleteReservation() {
+        let deleteUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Tickets?id=${getCookie("userId")}&reservationId=${reservationId}&tcNo=${tcNo}`;
+        result = (await axios.delete(deleteUrl)).status;
+        console.log(result);
+    }
 </script>
 
 <main>
-    
     <div class="section">
         <Navbar />
-        <TicketNotFound />
-        <!-- <TicketFound /> -->
+        {#if result == 204} 
+            <TicketFound />
+        {:else}
+            <TicketNotFound />
+        {/if}
         <div class="card ds-flex flex-column justify-content-center">
             <div class="ticketID d-flex flex-column pb-3 fs-4">
-                <label for="bid" class="fs-4 ms-3">Bilet ID</label>
-                <input type="text" id="bid" class="input" required>
+                <label for="bid" class="fs-4 ms-3">Rezervasyon ID</label>
+                <input type="text" id="bid" class="input" bind:value={reservationId} required>
             </div>
             <div class="userName d-flex flex-column">
-                <label for="un" class="fs-4 ms-3">Kullanıcı Adı</label>
-                <input type="text" id="un" class="input fs-4" required>
+                <label for="un" class="fs-4 ms-3">Yolcunun Kimlik Numarası</label>
+                <input type="text" id="un" class="input fs-4" bind:value={tcNo} required>
             </div>
             <div class="button d-flex flex-row-reverse p-4">
-                <button type="button" class="btn btn-danger fs-4 p-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">İptal Et</button>
+                <button type="button" class="btn btn-danger fs-4 p-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop" on:click={() => {
+                    deleteReservation();
+                }}>İptal Et</button>
             </div>
         </div>
     </div>
