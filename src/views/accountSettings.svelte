@@ -1,8 +1,68 @@
 <script>
     import Navbar from "../components/Navbar/navbar.svelte";
+    import { onMount } from 'svelte';
+    import axios from 'axios';
+    import { push } from 'svelte-spa-router';
 
+    let userInfos = "";
+    let result = 0;
 
+    let userName;
+    let userBirthdate;
+    let userTcNo;
+    let userPhoneNumber;
+    let userGender;
+    let userEmail;
+    let newPassword;
+    let newPasswordAgain;
+    let currentPassword;
 
+    function handleValues() {
+      userName = Name.value;
+      userBirthdate = Birthdate.value;
+      userTcNo = TcNo.value;
+      userPhoneNumber = PhoneNumber.value;
+      userGender = Gender.value;
+      userEmail = Email.value;
+      newPassword = Password.value;
+      newPasswordAgain = PasswordAgain.value;
+      currentPassword = oldPassword.value;
+    }
+    
+    function getCookie(cookieName) {    
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+    }
+
+    onMount(async () => {
+        try{
+            let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
+            userInfos = (await axios.get(userUrl)).data;
+        }catch(e) {
+            console.log(e);
+        } 
+    });
+
+    function delete_cookie(name) {
+        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    async function deleteUser() {
+      result = (await axios.delete(`https://onlineticketbackendapi.azure-api.net/v1/api/User?id=${getCookie("userId")}`)).status;
+      console.log(result);
+      if(result == 204) {
+        delete_cookie("jwt");
+        delete_cookie("userId");
+        push('/');
+      }else {
+        console.log("error");
+      }
+      return result;
+    }
 </script>
 <main>
     <Navbar/>
@@ -10,19 +70,39 @@
         <div class="text_hesap"><h1>Hesap Ayarları</h1></div>
         <div class="hesap">
           <div class="profile_tabShow">
-            <h2>Ad Soyad</h2>
-            <input type="text" class="input" />
+            <div class="d-flex flex-column">
+              <h2>Ad Soyad</h2>
+            <input type="text" class="input" value={userInfos.firstName + " " + userInfos.lastName} id="Name"/>
             <h2>E-mail</h2>
-            <input type="text" class="input" />
+            <input type="text" class="input" value={userInfos.email} id="Email"/>
             <h2>Doğum Tarihi</h2>
-            <input type="date" class="input" />
+            <input type="date" class="input" value={userInfos.birthdate} id="Birthdate"/>
+            </div>
             <h2>TC Kimlik No</h2>
-            <input type="text" class="input" />
+            <input type="text" class="input" value={userInfos.tcNo} id="TcNo"/>
             <h2>Cep Telefonu</h2>
-            <input type="text" class="input" />
+            <input type="text" class="input" value={userInfos.phoneNumber} id="PhoneNumber"/>
             <h2>Cinsiyet</h2>
-            <input type="text" class="input" />
-            <button class="btn">Güncelle</button>
+            <input type="text" class="input" value={userInfos.gender} id="Gender"/>
+            <button class="btn" on:click={() => {
+              handleValues();
+              axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/User/${userInfos.id}`, {
+                id: userInfos.id,
+                email: userEmail,
+                password: userInfos.password,
+                birthdate: userBirthdate,
+                firstName: userName.split(' ')[0],
+                lastName: userName.split(' ')[1],
+                phoneNumber: userPhoneNumber,
+                gender: userGender,
+                tcNo: userTcNo,
+              },
+              {
+                headers: {
+                    "Content-Type": "application/json"
+                  }
+              }).then(push('/'));
+            }}>Güncelle</button>
           </div>
         </div>
         <div class="sifre_islemleri_text">
@@ -30,13 +110,38 @@
         </div>
         <div class="sifre_islemleri">
           <h2>Eski Şifre</h2>
-          <input type="password" class="input_sifre" />
+          <input type="password" class="input_sifre" id="oldPassword"/>
           <h2>Yeni Şifre</h2>
-          <input type="password" class="input_sifre" />
+          <input type="password" class="input_sifre" id="Password"/>
           <h2>Yeni Şifre(Tekrar)</h2>
-          <input type="password" class="input_sifre" />
-          <button class="btn_sifre">Şifreyi Değiştir</button>
-          <h3 id="deleteAccount">Üyeliğimi Silmek İstiyorum</h3>
+          <input type="password" class="input_sifre" id="PasswordAgain"/>
+          <button class="btn_sifre" on:click={() => {
+            handleValues();
+            if(newPassword == newPasswordAgain && newPassword != currentPassword && currentPassword == userInfos.password) {
+              axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/User/${userInfos.id}`, {
+                id: userInfos.id,
+                email: userEmail,
+                password: newPassword,
+                birthdate: userBirthdate,
+                firstName: userName.split(' ')[0],
+                lastName: userName.split(' ')[1],
+                phoneNumber: userPhoneNumber,
+                gender: userGender,
+                tcNo: userTcNo,
+              },
+              {
+                headers: {
+                    "Content-Type": "application/json"
+                  }
+              }).then(push('/'));
+            }
+            else {
+              console.log("password error");
+            }
+          }}>Şifreyi Değiştir</button>
+          <h3 id="deleteAccount" on:click={() => {
+            deleteUser();
+          }}>Üyeliğimi Silmek İstiyorum</h3>
         </div>
     </div>
 </main>
@@ -45,8 +150,6 @@
 #deleteAccount:hover{
     color: red;
 }
-
-
 .section{
     width: 100%;
     height: 170vh;
