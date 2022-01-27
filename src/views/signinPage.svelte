@@ -13,8 +13,7 @@
     userFirstName = firstName.value;
     userLastName = lastName.value;
   }
-
-
+  
 </script>
 <main>
     <div class="container">
