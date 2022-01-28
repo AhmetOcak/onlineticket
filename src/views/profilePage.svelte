@@ -8,14 +8,14 @@ let data = "";
 function getCookie(cookieName) {
     let cookie = {};
     document.cookie.split(';').forEach(function(el) {
-      let [key,value] = el.split('=');
-      cookie[key.trim()] = value;
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
     })
     
     return cookie[cookieName];
-  }
+    }
 
-  onMount(async () => {
+    onMount(async () => {
         try{
             let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
             data = (await axios.get(userUrl)).data;
