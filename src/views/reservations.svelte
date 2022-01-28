@@ -19,7 +19,6 @@
       loading = true;
       try{
         reservations = (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${getCookie("userId")}`)).data.reservations;
-        loading = false;
         for(let i = 0; i < reservations.length; i++) {
           if(reservations[i].travelTypeId == 0) {
             busTravels[ib] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${reservations[i].id}`)).data;
@@ -29,6 +28,7 @@
             lp += 1;
           }
         }
+        loading = false;
         combiArrays();
       }catch(e) {
         loading = true;
