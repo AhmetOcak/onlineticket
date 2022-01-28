@@ -5,17 +5,21 @@
     import { searchRequest } from '../../store';
     import { onMount } from 'svelte';
     import axios from 'axios';
-
+    import Spinner from '../../components/LoadingSpinner/spinner.svelte';
+    import NoTicketCard from '../../components/TicketList/noTicketCard.svelte';
 
     let pushPath = '/buyPlaneTicketPage';
     let showButton = true;
     let searchResult = [];
+    let loading;
 
     onMount(async () => {
+        loading = true;
         try {
             searchResult = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Plane_Travels/${$searchRequest.departurePlace}/${$searchRequest.arrivalPlace}/${$searchRequest.date}`)).data;
-            console.log(searchResult);
+            loading = false;
         }catch(e) {
+            loading = true;
             console.log(e);
         }
     });
@@ -31,7 +35,11 @@
                     <TicketCard companyName={searchResult[i].companyName} departureTime={searchResult[i].departureTime} durationTime={searchResult[i].durationTime} arrivalTime={searchResult[i].arrivalTime} price={searchResult[i].price} pushPage={pushPath} showButton={showButton} id={searchResult[i].id}/>
                 </li>
                 {:else}
-                <li>Loading</li>
+                    {#if loading == true}
+                        <Spinner />
+                    {:else}
+                        <li><NoTicketCard /></li> 
+                    {/if}
                 {/each}
             </ul>
         </div>
@@ -64,5 +72,6 @@
     ul {
         padding-top: 50px;
         padding-bottom: 50px;
+        list-style: none;
     }
 </style>
