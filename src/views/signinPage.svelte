@@ -73,13 +73,6 @@
   
         <div class="panels-container mt-5">
           <div class="panel left-panel">
-            <div class="content">
-              <h3>Üye Misiniz?</h3>
-              <p>
-                Hemen Giriş Yapın.
-              </p>
-              <button class="btn transparent" id="sign-up-btn">Giriş Yap</button>
-            </div>
             <img src="assets/plane_uyeol.png" class="image" alt="" />
           </div>
         </div>
@@ -269,35 +262,6 @@ form.sign-in-form {
 .panel{
   color: #fff;
   transition: 0.9s 0.6s ease-in-out;
-}
-.content{
-    position: absolute;
-    left: 180px;
-    top: 80px;
-    color: #fff;
-    transition: 0.9s 0.6s ease-in-out;
-
-}
-
-.panel h3 {
-  font-weight: 600;
-  line-height: 1;
-  font-size: 1.5rem;
-}
-
-.panel p {
-  font-size: 0.95rem;
-  padding: 0.7rem 0;
-}
-
-.btn.transparent {
-  margin: 0;
-  background: none;
-  border: 2px solid #fff;
-  width: 130px;
-  height: 41px;
-  font-weight: 600;
-  font-size: 0.8rem;
 }
 
 .image {

@@ -75,13 +75,6 @@
         </div>
         <div class="panels-container">
           <div class="panel left-panel">
-            <div class="content">
-              <h3>Henüz Kaydolmadınız mı?</h3>
-              <p>
-                Hemen üye olun ve sizin için seçtiğimiz fırsatlardan haberdar olun.
-              </p>
-              <button class="btn transparent" id="sign-up-btn">Üye Ol</button>
-            </div>
             <img src="assets/log.png" class="image" alt="" />
           </div>
         </div>
@@ -265,32 +258,6 @@ form.sign-in-form {
 .left-panel {
   pointer-events: all;
   padding: 3rem 17% 2rem 12%;
-}
-
-.panel .content {
-  color: #fff;
-  transition: 0.9s 0.6s ease-in-out;
-}
-
-.panel h3 {
-  font-weight: 600;
-  line-height: 1;
-  font-size: 1.5rem;
-}
-
-.panel p {
-  font-size: 0.95rem;
-  padding: 0.7rem 0;
-}
-
-.btn.transparent {
-  margin: 0;
-  background: none;
-  border: 2px solid #fff;
-  width: 130px;
-  height: 41px;
-  font-weight: 600;
-  font-size: 0.8rem;
 }
 
 .image {
