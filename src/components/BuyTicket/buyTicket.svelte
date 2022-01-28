@@ -24,6 +24,8 @@
     let cvc2;
 
     let ticketInfo = [];
+    let userInfo;
+    let balance;
 
     let currentBalance = 0;
     let newBalance = 0;
@@ -32,7 +34,9 @@
         try{
             let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
             currentBalance = (await axios.get(walletUrl)).data.balance;
-            console.log(currentBalance);
+            let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
+            userInfo = (await axios.get(userUrl)).data;
+            console.log(userInfo);
         }catch(e) {
             console.log(e);
         } 
@@ -69,15 +73,19 @@
         }
     }
 
-    function checkInfos() {
-        if(ppassengerName == null || ppassengerTc == null || creditCardNo == null || creditCardUserName == null || month == "" || year == "" || cvc2 == null) {
-            console.log("false");
-            console.log($selectedTicketId);
+    function checkUserInfos() {
+        if(userInfo.birthdate != null && userInfo.gender != null && userInfo.phoneNumber != null && userInfo.email != null && userInfo.tcNo != null && userInfo.firstName != null && userInfo.lastName != null) {
+            buyTicket();
+            return true;
+        }else {
             return false;
         }
-        console.log("true");
-        result();
-        buyTicket();
+    }
+
+    function checkInfos() {
+        if(ppassengerName == null || ppassengerTc == null || creditCardNo == null || creditCardUserName == null || month == "" || year == "" || cvc2 == null) {
+            return false;
+        }
         return true;
     }
 
@@ -94,24 +102,27 @@
         let userId = getCookie("userId");
         let user = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User/${userId}`)).data;
         let userName = user.firstName + " " + user.lastName;
+
         if(travelType == 0) {
             ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
         }else {
             ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Plane_Travels/${$selectedTicketId}`)).data;
         }
+
         let todayDate = getDate();
         await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${ticketInfo[0].travelType}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
+        
+        let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
+        balance = (await axios.get(walletUrl)).data.balance;
+        if(balance >= ticketInfo[0].price) {
+            balance = balance - ticketInfo[0].price;
+            axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${balance}`);
+        }else if(balance < ticketInfo[0].price && balance != 0){
+            balance = 0;
+            axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${balance}`);
+        }
     }
 
-    function result() {
-        console.log(ppassengerName);
-        console.log(ppassengerTc);
-        console.log(creditCardNo);
-        console.log(creditCardUserName);
-        console.log(month);
-        console.log(year);
-        console.log(cvc2);
-    }
 </script>
 
 <main>
@@ -143,12 +154,16 @@
                 <button type="button" class="btn btn-success p-3 fs-5" on:click={() => {
                     if(checkCurrentUser()) {
                         console.log("giriş yapan var ödeme yapılabilir");
-                        result();
                         if(checkInfos()) {
-                            push('/');
+                            if(checkUserInfos()) {
+                                push('/');
+                            }else {
+                                console.log("profil bilgilerinizi doldurunuz");
+                                push('/');
+                            }
                         }
                         else {
-                            console.log("bilgileri girilmedi");
+                            console.log("bilgileri doldurunuz");
                         }
                     }
                     else {
@@ -175,7 +190,7 @@
                             </div>
                             <div class="card-body">
                                 <h6 class="card-title" style="color: aliceblue;">Toplam Bakiye</h6>
-                                <p class="card-text text-warning fs-6">0.00TL</p>
+                                <p class="card-text text-warning fs-6">{currentBalance}TL</p>
                             </div>
                         </div>
                     </div>
