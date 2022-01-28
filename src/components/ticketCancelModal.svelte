@@ -11,7 +11,7 @@
                     <h4 class="modal-title text-danger" id="staticBackdropLabel">Dikkat</h4>
                 </div>
                 <div class="modal-body fs-4">
-                    Seçtiğiniz bileti iptal etmek istediğinize emin misiniz ?
+                    Rezervasyonunuzu iptal etmek istediğinize emin misiniz ?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Hayır</button>

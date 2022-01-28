@@ -2,10 +2,13 @@
 <script>
     import Navbar from '../components/Navbar/navbar.svelte';
     import BillCard from '../components/Bill/billCard.svelte';
+    import NoBillCard from '../components/Bill/noBillCard.svelte';
     import { onMount } from 'svelte';
     import axios from 'axios';
+    import Spinner from '../components/LoadingSpinner/spinner.svelte';
 
     let bills = [];
+    let loading;
 
     function getCookie(cookieName) {
         let cookie = {};
@@ -18,11 +21,12 @@
 
     onMount(async () => {
         let userId = getCookie("userId");
-        console.log(userId);
+        loading = true;
         try {
             bills = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User_Bills/${userId}`)).data.bills;
-            console.log(bills);
+            loading = false;
         } catch(e) {
+            loading = true;
             console.log(e);
         }
     });
@@ -32,7 +36,7 @@
 <main>
     <div class="section d-flex flex-column justify-content-center">
         <Navbar />
-        <div class="container  d-flex flex-column justify-content-start align-items-center">
+        <div class="container d-flex flex-column justify-content-start align-items-center">
             <h1 class="pt-3">Faturalarım</h1>
             <ul class="list-group">
                 {#each {length: bills.length} as _, i}
@@ -40,7 +44,11 @@
                         <BillCard companyName={bills[i].companyName} userName={bills[i].userName} billPrice={bills[i].price} date={bills[i].purchaseDate} ticketID={i} purchasePlace={bills[i].purchasePlace}/>
                     </li>
                 {:else}
-                    <li>Loading</li>
+                    {#if loading == true}
+                        <Spinner />
+                    {:else}
+                        <li><NoBillCard /></li> 
+                    {/if}
                 {/each}
             </ul>
         </div>

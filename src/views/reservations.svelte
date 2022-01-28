@@ -1,21 +1,25 @@
 <script>
     import Navbar from "../components/Navbar/navbar.svelte";
     import Reservations from "../components/ReservationsCard/reservations.svelte";
+    import NoReservations from "../components/ReservationsCard/noReservationCard.svelte";
     import { onMount } from 'svelte';
     import axios from 'axios';
+    import Spinner from '../components/LoadingSpinner/spinner.svelte';
 
     let reservations = [];
     let busTravels = [];
     let planeTravels = [];
     let travels = [];
+    let loading;
 
     let ib = 0; // otobüs için sayaç
     let lp = 0; // uçak için sayaç
 
     onMount(async () => {
+      loading = true;
       try{
         reservations = (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${getCookie("userId")}`)).data.reservations;
-        console.log(reservations);
+        loading = false;
         for(let i = 0; i < reservations.length; i++) {
           if(reservations[i].travelTypeId == 0) {
             busTravels[ib] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${reservations[i].id}`)).data;
@@ -27,6 +31,7 @@
         }
         combiArrays();
       }catch(e) {
+        loading = true;
         console.log(e);
       }
     });
@@ -62,7 +67,13 @@
                 {#each {length: travels.length} as _, i}
                   <li><Reservations arrivalPlace={travels[i].arrivalPlace} departurePlace={travels[i].departurePlace} arrivalTime={travels[i].arrivalTime} departureTime={travels[i].departureTime} transport={(travels[i].travelType)} passengerTc={reservations[i].passengerTc} travelId={reservations[i].id}/></li>
                 {:else}
-                  <li>Loading</li>
+                    {#if loading == true}
+                        <div id="spinner">
+                          <Spinner /> 
+                        </div>
+                    {:else}
+                        <li><NoReservations/></li>
+                    {/if}
                 {/each}
             </ul>
         </div>
@@ -70,6 +81,11 @@
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+#spinner {
+  margin-left: 45%;
+  margin-top: 25%;
+}
 
 .section {
     width: 100%;
