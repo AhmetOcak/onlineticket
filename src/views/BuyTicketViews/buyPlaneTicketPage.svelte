@@ -7,15 +7,20 @@
     import { selectedTicketId } from "../../store"
     import { onMount } from 'svelte';
     import axios from 'axios';
+    import Spinner from '../../components/LoadingSpinner/spinner.svelte';
+    import NoTicketCard from '../../components/TicketList/noTicketCard.svelte';
 
     let ticketInfo = [];
+    let loading;
 
     onMount(async () => {
+        loading = true;
         try{
             ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Plane_Travels/${$selectedTicketId}`)).data;
-            console.log(ticketInfo[0]);
+            loading = false;
         }catch(e) {
             console.log(e);
+            loading = true;
         }
     });
 
@@ -30,7 +35,13 @@
                 {#each ticketInfo as ticket}
                     <TicketCard companyName={ticket.companyName} departureTime={ticket.departureTime} durationTime={ticket.durationTime} arrivalTime={ticket.arrivalTime} price={ticket.price} arrivalPlace={ticket.arrivalPlace} departurePlace={ticket.departurePlace} cancelTheTicket=true/>
                 {:else}
-                <li>Loading</li>
+                    {#if loading == true}
+                        <div id="spinner">
+                            <Spinner />
+                        </div>
+                    {:else}
+                        <li><NoTicketCard /></li> 
+                    {/if}
                 {/each}
             </div>
             <BuyTicket buttonText="Ödeme Yap" showUserInfo=true travelType="1"/>
@@ -52,5 +63,9 @@
         width: 50%;
         position: relative;
         margin-top: 100px;
+    }
+
+    #spinner {
+        margin-left: 43%;
     }
 </style>
