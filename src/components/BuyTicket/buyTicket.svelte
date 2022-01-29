@@ -209,12 +209,22 @@
                             if(checkUserInfos()) {
                                 
                             }else {
-                                console.log("profil bilgilerinizi doldurunuz");
+                                toast.push('Lütfen Profil Bilgilerinizi Doldurunuz!', {
+                                    theme: {
+                                        '--toastBackground': '#F56565',
+                                        '--toastBarBackground': '#C53030'
+                                    }
+                                });
                                 loadingForTicket = false;
                             }
                         }
                         else {
-                            console.log("bilgileri doldurunuz");
+                            toast.push('Lütfen Gerekli Bilgileri Giriniz!', {
+                                    theme: {
+                                        '--toastBackground': '#F56565',
+                                        '--toastBarBackground': '#C53030'
+                                    }
+                            });
                             loadingForTicket = false;
                         }
                     }
