@@ -5,6 +5,7 @@
     import { selectedTicketId } from "../../store";
     import axios from 'axios';
     import { onMount } from 'svelte';
+    import Spinner from '../../components/LoadingSpinner/spinner.svelte';
 
     let masterCard = '../assets/masterCard.png';
     let visaCard = '../assets/visa.png';
@@ -26,6 +27,8 @@
     let ticketInfo = [];
     let userInfo;
     let balance;
+    let loading = false;
+    let loadingForTicket = false;
 
     let currentBalance = 0;
     let newBalance = 0;
@@ -64,6 +67,7 @@
     }
 
     function checkCurrentUser() {
+        loadingForTicket = true;
         if(document.cookie == "") {
             console.log("giriş yapan yok");
             return false;
@@ -110,7 +114,11 @@
         }
 
         let todayDate = getDate();
-        await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${ticketInfo[0].travelType}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`);
+        await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${ticketInfo[0].travelType}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`).then((result) => {
+            push('/');
+        }).catch((err) => {
+            console.log(err);
+        });;
         
         let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
         balance = (await axios.get(walletUrl)).data.balance;
@@ -156,7 +164,7 @@
                         console.log("giriş yapan var ödeme yapılabilir");
                         if(checkInfos()) {
                             if(checkUserInfos()) {
-                                push('/');
+                                
                             }else {
                                 console.log("profil bilgilerinizi doldurunuz");
                                 push('/');
@@ -172,6 +180,11 @@
                 }}>{buttonText}</button>
             </div>
         </div>
+        {#if loadingForTicket == true}
+        <div id="spinner2">
+            <Spinner />
+        </div>
+        {/if}
         {/if}
         <div class="space p-3"></div>
         <div class="card text-dark bg-light mb-3" id="cardInfo">
@@ -254,10 +267,24 @@
                         if(newBalance == 0 || newBalance == null) {
                             console.log("invalid balance enter");
                         }else {
-                            currentBalance = parseInt(currentBalance) + parseInt(newBalance);
-                            axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${currentBalance}`).then(push('/'));
+                            if(creditCardNo == null || creditCardUserName == null || month == "" || year == "" || cvc2 == null) {
+                                console.log("bilgileri doldurunuz");
+                            }else {
+                                currentBalance = parseInt(currentBalance) + parseInt(newBalance);
+                                loading = true;
+                                axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${currentBalance}`).then((result) => {
+                                    push('/');
+                                }).catch((err) => {
+                                    console.log(err);
+                                });
+                            }
                         }
                     }}>TL Yükle</button>
+                </div>
+            {/if}
+            {#if loading == true}
+                <div id="spinner">
+                    <Spinner />
                 </div>
             {/if}
         </div>
@@ -265,6 +292,19 @@
 </main>
 
 <style>
+
+    #spinner2 {
+        z-index: 1;
+        position: absolute;
+        margin-top: 5%;
+    }
+
+    #spinner {
+        margin-left: 39%;
+        margin-top: 25%;
+        position: absolute;
+    }
+
     #cardInfo {
         width: 50%;
     }
