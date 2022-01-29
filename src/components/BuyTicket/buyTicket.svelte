@@ -6,6 +6,7 @@
     import axios from 'axios';
     import { onMount } from 'svelte';
     import Spinner from '../../components/LoadingSpinner/spinner.svelte';
+    import { toast } from '@zerodevx/svelte-toast'
 
     let masterCard = '../assets/masterCard.png';
     let visaCard = '../assets/visa.png';
@@ -42,6 +43,12 @@
             console.log(userInfo);
         }catch(e) {
             console.log(e);
+            toast.push('İnternet Bağlantısı Başarısız!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
+                });
         } 
     });
 
@@ -103,6 +110,7 @@
     }
     
     async function buyTicket() {
+        try{
         let userId = getCookie("userId");
         let user = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User/${userId}`)).data;
         let userName = user.firstName + " " + user.lastName;
@@ -114,11 +122,37 @@
         }
 
         let todayDate = getDate();
-        await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${ticketInfo[0].travelType}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`).then((result) => {
-            push('/');
+        let result = await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${ticketInfo[0].travelType}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`).then((result) => {
+            if(result.status == 204) {
+                loadingForTicket = false;
+                toast.push('Satın alma işlemi başarılı!', {
+                    theme: {
+                        '--toastBackground': '#48BB78',
+                        '--toastBarBackground': '#2F855A'
+                    }
+                });
+                setTimeout(() => {
+                    push('/');
+                }, 3000);
+            }else {
+                toast.push('İşlem Başarısız!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
+                });
+            }
         }).catch((err) => {
+            loadingForTicket = false;
             console.log(err);
-        });;
+            toast.push('İşlem Başarısız!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
+                });
+        });
+        
         
         let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
         balance = (await axios.get(walletUrl)).data.balance;
@@ -128,6 +162,15 @@
         }else if(balance < ticketInfo[0].price && balance != 0){
             balance = 0;
             axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${balance}`);
+        }
+        }catch(e) {
+            loadingForTicket = false;
+            toast.push('İşlem Başarısız!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
+                });
         }
     }
 
@@ -167,11 +210,12 @@
                                 
                             }else {
                                 console.log("profil bilgilerinizi doldurunuz");
-                                push('/');
+                                loadingForTicket = false;
                             }
                         }
                         else {
                             console.log("bilgileri doldurunuz");
+                            loadingForTicket = false;
                         }
                     }
                     else {
