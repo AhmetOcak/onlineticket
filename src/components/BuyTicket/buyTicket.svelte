@@ -327,7 +327,16 @@
                                 currentBalance = parseInt(currentBalance) + parseInt(newBalance);
                                 loading = true;
                                 axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${currentBalance}`).then((result) => {
+                                    loading = false;
+                                    toast.push('İşleminiz Başarılı!', {
+                                    theme: {
+                                        '--toastBackground': '#48BB78',
+                                        '--toastBarBackground': '#2F855A'
+                                    }
+                                });
+                                setTimeout(() => {
                                     push('/');
+                                }, 3000);
                                 }).catch((err) => {
                                     loading = false;
                                     toast.push('Ağ Hatası!', {
