@@ -166,11 +166,11 @@
         }catch(e) {
             loadingForTicket = false;
             toast.push('İşlem Başarısız!', {
-                    theme: {
-                        '--toastBackground': '#F56565',
-                        '--toastBarBackground': '#C53030'
-                    }
-                });
+                theme: {
+                    '--toastBackground': '#F56565',
+                    '--toastBarBackground': '#C53030'
+                }
+            });
         }
     }
 
@@ -319,6 +319,13 @@
                                 axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}/${currentBalance}`).then((result) => {
                                     push('/');
                                 }).catch((err) => {
+                                    loading = false;
+                                    toast.push('Ağ Hatası!', {
+                                        theme: {
+                                            '--toastBackground': '#F56565',
+                                            '--toastBarBackground': '#C53030'
+                                            }
+                                    });
                                     console.log(err);
                                 });
                             }

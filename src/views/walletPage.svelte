@@ -22,6 +22,7 @@
             balance = (await axios.get(walletUrl)).data.balance;
             console.log(balance);
         }catch(e) {
+            balance = "Ağ hatası";
             console.log(e);
         } 
     });

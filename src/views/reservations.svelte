@@ -35,12 +35,12 @@
       }catch(e) {
         loading = false;
         error = true;
-            toast.push('Ağ Hatası!', {
-                    theme: {
-                        '--toastBackground': '#F56565',
-                        '--toastBarBackground': '#C53030'
-                    }
-                });
+        toast.push('Ağ Hatası!', {
+                theme: {
+                    '--toastBackground': '#F56565',
+                    '--toastBarBackground': '#C53030'
+                }
+            });
         console.log(e);
       }
     });
