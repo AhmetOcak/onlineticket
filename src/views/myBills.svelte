@@ -6,9 +6,11 @@
     import { onMount } from 'svelte';
     import axios from 'axios';
     import Spinner from '../components/LoadingSpinner/spinner.svelte';
+    import { toast } from '@zerodevx/svelte-toast'
 
     let bills = [];
     let loading;
+    let error = false;
 
     function getCookie(cookieName) {
         let cookie = {};
@@ -26,7 +28,14 @@
             bills = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User_Bills/${userId}`)).data.bills;
             loading = false;
         } catch(e) {
-            loading = true;
+            loading = false;
+            error = true;
+            toast.push('Ağ Hatası!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
+                });
             console.log(e);
         }
     });
@@ -47,7 +56,11 @@
                     {#if loading == true}
                         <Spinner />
                     {:else}
-                        <li><NoBillCard /></li> 
+                        {#if error == true}
+                            <li><NoBillCard text="Ağ Hatası" header="Hata"/></li> 
+                        {:else}
+                            <li><NoBillCard text="Herhangi bir bilet satın alma işleminiz olmadığından dolayı faturanız bulunmamaktadır" header="Faturanız bulunmamaktadır"/></li> 
+                        {/if}
                     {/if}
                 {/each}
             </ul>

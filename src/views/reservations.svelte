@@ -5,12 +5,14 @@
     import { onMount } from 'svelte';
     import axios from 'axios';
     import Spinner from '../components/LoadingSpinner/spinner.svelte';
+    import { toast } from '@zerodevx/svelte-toast'
 
     let reservations = [];
     let busTravels = [];
     let planeTravels = [];
     let travels = [];
     let loading;
+    let error = false;
 
     let ib = 0; // otobüs için sayaç
     let lp = 0; // uçak için sayaç
@@ -31,7 +33,14 @@
         loading = false;
         combiArrays();
       }catch(e) {
-        loading = true;
+        loading = false;
+        error = true;
+            toast.push('Ağ Hatası!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
+                });
         console.log(e);
       }
     });
@@ -72,7 +81,11 @@
                           <Spinner /> 
                         </div>
                     {:else}
-                        <li><NoReservations/></li>
+                        {#if error == true}
+                            <li><NoReservations text="Ağ Hatası"/></li> 
+                        {:else}
+                            <li><NoReservations text="Rezervasyonunuz bulunmamaktadır"/></li> 
+                        {/if}
                     {/if}
                 {/each}
             </ul>

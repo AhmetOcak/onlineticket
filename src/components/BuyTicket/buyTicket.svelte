@@ -43,7 +43,7 @@
             console.log(userInfo);
         }catch(e) {
             console.log(e);
-            toast.push('İnternet Bağlantısı Başarısız!', {
+            toast.push('Ağ Hatası!', {
                     theme: {
                         '--toastBackground': '#F56565',
                         '--toastBarBackground': '#C53030'

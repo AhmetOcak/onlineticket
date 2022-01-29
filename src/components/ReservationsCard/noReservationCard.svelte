@@ -1,10 +1,11 @@
 <script>
+    export let text;
 </script>
 
 <main>
     <div class="ticket1">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <p id="text">Rezervasyonunuz bulunmamaktadır</p>
+            <p id="text">{text}</p>
         </div> 
     </div>
 </main>
