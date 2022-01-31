@@ -12,7 +12,7 @@
 
     function checkCurrentUser() {
         console.log(document.cookie.length);
-        if(document.cookie.length == 11) {
+        if(document.cookie.length <= 13) {
             console.log("giriş yapan yok");
             return false;
         }else {
