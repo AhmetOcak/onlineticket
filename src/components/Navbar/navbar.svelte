@@ -4,22 +4,15 @@
     import TlUsd from './tlUsd.svelte';
     import { link } from 'svelte-spa-router';
     import { push } from 'svelte-spa-router';
+    import { onMount } from 'svelte';
 
     function delete_cookie(name) {
         document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
 
-    function getCookie(cookieName) {    
-    let cookie = {};
-    document.cookie.split(';').forEach(function(el) {
-        let [key,value] = el.split('=');
-        cookie[key.trim()] = value;
-    })
-    return cookie[cookieName];
-    }
-
     function checkCurrentUser() {
-        if(getCookie("userId") == null) {
+        console.log(document.cookie.length);
+        if(document.cookie.length == 11) {
             console.log("giriş yapan yok");
             return false;
         }else {
@@ -28,12 +21,21 @@
         }
     }
 
+    onMount(async () => {
+        console.log(checkCurrentUser());
+        try{
+            checkCurrentUser();
+        }catch(e) {
+            console.log(e);
+        } 
+    });
+    
 </script>
 
 <main>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark py-3 fixed-top">
         <div class="container">
-            <a href="#" class="navbar-brand fs-3"><img src="../assets/logo.png" alt=""></a>
+            <a href="/" class="navbar-brand fs-3"><img src="../assets/logo.png" alt=""></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu"><span
                     class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navmenu">

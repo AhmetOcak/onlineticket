@@ -18,7 +18,7 @@
     });
     document.cookie = `jwt=${cookie.data.message}`;
     getUserByCookie();
-    push('/');
+    push('#/');
   }
 
   function getCookie(cookieName) {
