@@ -74,7 +74,7 @@
         <div class="section">
             <ul class="box_seyehatlerim">
                 {#each {length: travels.length} as _, i}
-                  <li><Reservations arrivalPlace={travels[i].arrivalPlace} departurePlace={travels[i].departurePlace} arrivalTime={travels[i].arrivalTime} departureTime={travels[i].departureTime} transport={(travels[i].travelType)} passengerTc={reservations[i].passengerTc} travelId={reservations[i].id}/></li>
+                  <li><Reservations arrivalPlace={travels[i].arrivalPlace} departurePlace={travels[i].departurePlace} arrivalTime={travels[i].arrivalTime} departureTime={travels[i].departureTime} transport={(travels[i].travelType)} passengerTc={reservations[i].passengerTc} travelId={reservations[i].id} r="Rezervasyon Id"/></li>
                 {:else}
                     {#if loading == true}
                         <div id="spinner">

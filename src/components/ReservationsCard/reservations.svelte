@@ -6,6 +6,7 @@
     export let transport;
     export let passengerTc;
     export let travelId;
+    export let r;
 
     function selectTransport() {
         if(transport == 0) {
@@ -49,7 +50,7 @@
                 <h2>{arrivalPlace}</h2>
                 <h3 class="pt-2">Varış: {arrivalTime}</h3>
                 <div id="reservationId" class="pt-4 mt-4">
-                    <h2>Rezervasyon Id</h2>
+                    <h2>{r}</h2>
                     <h3>{travelId}</h3>
                 </div>  
             </div>
