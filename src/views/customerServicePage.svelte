@@ -25,12 +25,7 @@ onMount(async () => {
         <Navbar />
             <!--Contact Section Start-->
             <div class="contact-section">
-                <div class="contact-info">
-                    <div style="color: black"><i class="bi bi-house-fill" style="color: black"></i>{pageText[0]}</div>
-                    <div style="color: black"><i class="bi bi-envelope-fill" style="color: black"></i>{pageText[1]}</div>
-                    <div style="color: black"><i class="bi bi-telephone-fill" style="color: black"></i>{pageText[2]}</div>
-                    <div style="color: black"><i class="bi bi-clock-fill" style="color: black"></i>{pageText[3]}</div>
-                </div>
+               
                 <div class="contact-form">
                     <h2 style="color: black;">{pageText[4]}</h2>
                     <form class="contact" action="" method="post"></form>
