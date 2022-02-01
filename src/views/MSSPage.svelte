@@ -167,7 +167,7 @@ Seferler sırasında meydana gelebilecek her türlü kaza, mal veya can kaybı g
                     </p>
                 </li>
             </ul>
-            <p>31.12.2020</p>
+            <p>31.12.2021</p>
         </div>
     </div>
 </main>

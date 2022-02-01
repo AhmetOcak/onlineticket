@@ -52,25 +52,9 @@
                   }
                 });
               }}/>
-              <p class="social-text">Veya sosyal platformlarla kaydolun</p>
-              <div class="social-media">
-                <a href="https://www.facebook.com/" class="social-icon" target="blank">
-                  <i class="bi bi-facebook"></i>
-                </a>
-                <a href="https://twitter.com/i/flow/login" class="social-icon">
-                  <i class="bi bi-twitter"></i>
-                </a>
-                <a href="https://accounts.google.com/signin/v2/identifier?passive=1209600&continue=https%3A%2F%2Fcontacts.google.com%2F%3Fhl%3Dtr&followup=https%3A%2F%2Fcontacts.google.com%2F%3Fhl%3Dtr&hl=tr&flowName=GlifWebSignIn&flowEntry=ServiceLogin" class="social-icon">
-                  <i class="bi bi-google"></i>
-                </a>
-                <a href="https://www.linkedin.com/" class="social-icon">
-                  <i class="bi bi-linkedin"></i>
-                </a>
-              </div>
             </form>
           </div>
         </div>
-  
         <div class="panels-container mt-5">
           <div class="panel left-panel">
             <img src="assets/plane_uyeol.png" class="image" alt="" />
@@ -191,36 +175,6 @@ form.sign-in-form {
 
 .btn:hover {
   background-color: #050505;
-}
-
-.social-text {
-  padding: 0.7rem 0;
-}
-
-.social-media {
-  display: flex;
-  justify-content: center;
-  
-}
-
-.social-icon {
-  height: 45px;
-  width: 45px;
-  border: 1px solid #333;
-  margin: 0 0.45rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  color: rgb(110, 110, 110);
-  font-size: 1.3rem;
-  border-radius: 50%;
-  transition: all 0.5s;
-}
-
-.social-icon:hover {
-  color: #000000;
-  border-color: #000000;
 }
 
 .signin-signup {

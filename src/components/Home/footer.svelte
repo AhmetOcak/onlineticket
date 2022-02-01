@@ -22,7 +22,7 @@
                     <h4 class="mt-lg-0 mt-sm-3">Bizi takip edin</h4>
                         <ul class="m-0 p-0">
                         <li>- <a href="https://www.facebook.com/" target="blank">Facebook</a></li>
-                        <li>- <a href="https://www.instagram.com/" target="blank">İnstagram</a></li>
+                        <li>- <a href="https://www.instagram.com/" target="blank">Instagram</a></li>
                         <li>- <a href="https://twitter.com/login?lang=tr" target="blank">Twitter</a></li>
                         <li>- <a href="https://web.telegram.org/" target="blank">Telegram</a></li>
                         <li>- <a href="https://web.bip.com/" target="blank">Bip</a></li>
