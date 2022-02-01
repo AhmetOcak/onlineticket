@@ -2,6 +2,8 @@
 <script>
     import { push } from "svelte-spa-router";
     import { selectedTicketId } from "../../store"
+    import { onMount } from 'svelte';
+    import axios from 'axios';
 
     export let companyName;
     export let departureTime;
@@ -14,6 +16,43 @@
     export let showButton = false;
     export let cancelTheTicket = false;
     export let id;
+
+    let exchangeRate = 0;
+    
+    function getCookie(cookieName) {    
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+    }
+
+    async function getExchangeRate() {
+        if(getCookie("currency") == "TL") {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f809af6a1589b78639c53b')).data.rate;
+            return exchangeRate;
+        }else if(getCookie("currency") == "USD") {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f80a0ba789e7ab01ddf744')).data.rate;
+            return exchangeRate;
+        }else {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f80a35a789e7ab01ddf745')).data.rate;
+            return exchangeRate;
+        }
+    }
+
+    onMount(async () => {
+        try{
+            price = price / (await getExchangeRate());
+            price = Number(price).toFixed(2);
+            console.log(price);
+        }catch(e) {
+            price = "Ağ hatası";
+            console.log(e);
+        } 
+    });
+
+
 </script>
 
 <main>
@@ -46,7 +85,7 @@
             <div class="d-flex align-item-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <h4>Fiyat</h4>
-                    <p>{price}</p>
+                    <p>{price + " " + getCookie("currency")}</p>
                 </div>
             </div>
             {#if showButton} 
