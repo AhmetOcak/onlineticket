@@ -78,27 +78,13 @@ onMount(async () => {
     align-items: center;
 }
 
-.contact-info{
-    color: #fff;
-    max-width: 500px;
-    line-height: 65px;
-    padding-left: 50px;
-    font-size: 18px;
-}
 
-.contact-info i{
-    margin-right: 20px;
-    font-size: 25px;
-}
 
 .contact-form{
     max-width: 700px;
     margin-right: 50px;
 }
 
-.contact-info , .contact-form{
-    flex: 1;
-}
 
 .contact-form h2{
     color: #fff;
@@ -166,10 +152,6 @@ onMount(async () => {
 @media screen and (max-width:950px){
     .contact-section{
         flex-direction: column;
-    }
-
-    .contact-info, .contact-form{
-        margin: 30px 50px;
     }
 
     .contact-form h2{
