@@ -13,7 +13,6 @@
         }
         try{
             currencies = await (await axios.get(currencyUrl)).data[0].currencyUnit;
-            console.log(currencies);
         } catch(e) {
             console.log(e);
         }
