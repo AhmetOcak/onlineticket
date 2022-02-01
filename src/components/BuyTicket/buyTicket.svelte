@@ -33,11 +33,14 @@
 
     let currentBalance = 0;
     let newBalance = 0;
+    let exchangeRate = 0;
 
     onMount(async () => {
         try{
             let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
             currentBalance = (await axios.get(walletUrl)).data.balance;
+            currentBalance = currentBalance / (await getExchangeRate());
+            currentBalance = Number(currentBalance).toFixed(2);
             let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
             userInfo = (await axios.get(userUrl)).data;
             console.log(userInfo);
@@ -51,6 +54,19 @@
                 });
         } 
     });
+
+    async function getExchangeRate() {
+        if(getCookie("currency") == "TL") {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f809af6a1589b78639c53b')).data.rate;
+            return exchangeRate;
+        }else if(getCookie("currency") == "USD") {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f80a0ba789e7ab01ddf744')).data.rate;
+            return exchangeRate;
+        }else {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f80a35a789e7ab01ddf745')).data.rate;
+            return exchangeRate;
+        }
+    }
 
     function getDate() {
         var today = new Date();
@@ -257,7 +273,7 @@
                             </div>
                             <div class="card-body">
                                 <h6 class="card-title" style="color: aliceblue;">Toplam Bakiye</h6>
-                                <p class="card-text text-warning fs-6">{currentBalance}TL</p>
+                                <p class="card-text text-warning fs-6">{currentBalance + " " + getCookie("currency")}</p>
                             </div>
                         </div>
                     </div>

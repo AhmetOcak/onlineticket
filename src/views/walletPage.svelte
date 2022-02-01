@@ -36,7 +36,6 @@
             balance = (await axios.get(walletUrl)).data.balance;
             balance = balance / (await getExchangeRate());
             balance = Number(balance).toFixed(2);
-            console.log(balance);
         }catch(e) {
             balance = "Ağ hatası";
             console.log(e);
