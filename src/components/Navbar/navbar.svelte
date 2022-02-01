@@ -11,18 +11,14 @@
     }
 
     function checkCurrentUser() {
-        console.log(document.cookie.length);
         if(document.cookie.length <= 13) {
-            console.log("giriş yapan yok");
             return false;
         }else {
-            console.log("giriş yapan var");
             return true;
         }
     }
 
     onMount(async () => {
-        console.log(checkCurrentUser());
         try{
             checkCurrentUser();
         }catch(e) {
