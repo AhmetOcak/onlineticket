@@ -11,6 +11,7 @@
     let bills = [];
     let loading;
     let error = false;
+    let title = "";
 
     function getCookie(cookieName) {
         let cookie = {};
@@ -26,6 +27,7 @@
         loading = true;
         try {
             bills = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/User_Bills/${userId}`)).data.bills;
+            title = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/BillPage/61f91de4b4961311f09c29d5")).data.text;
             loading = false;
         } catch(e) {
             loading = false;
@@ -46,7 +48,7 @@
     <div class="section d-flex flex-column justify-content-center">
         <Navbar />
         <div class="container d-flex flex-column justify-content-start align-items-center">
-            <h1 class="pt-3">Faturalarım</h1>
+            <h1 class="pt-3">{title[0]}</h1>
             <ul class="list-group">
                 {#each {length: bills.length} as _, i}
                     <li>

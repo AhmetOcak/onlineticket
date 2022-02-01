@@ -2,27 +2,37 @@
 import Navbar from "../components/Navbar/navbar.svelte";
 import axios from 'axios';
 import { push } from 'svelte-spa-router';
+import { onMount } from 'svelte';
 
 let user;
 let mail;
 let text;
+let pageText = "";
 
+onMount(async () => {
+        try{
+            let pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/CustomerPage/61f91850b4961311f09c29ce")).data;
+            pageText = pageData.text;
+        }catch(e) {
+            console.log(e);
+        } 
+    });
 
 </script>
 
 <main>
-    <body>
+    <div class="sec">
         <Navbar />
             <!--Contact Section Start-->
             <div class="contact-section">
                 <div class="contact-info">
-                    <div style="color: black"><i class="bi bi-house-fill" style="color: black"></i>Adress,City,Country</div>
-                    <div style="color: black"><i class="bi bi-envelope-fill" style="color: black"></i>contact@gmail.com</div>
-                    <div style="color: black"><i class="bi bi-telephone-fill" style="color: black"></i>+00 000 000 00 00</div>
-                    <div style="color: black"><i class="bi bi-clock-fill" style="color: black"></i>7/24</div>
+                    <div style="color: black"><i class="bi bi-house-fill" style="color: black"></i>{pageText[0]}</div>
+                    <div style="color: black"><i class="bi bi-envelope-fill" style="color: black"></i>{pageText[1]}</div>
+                    <div style="color: black"><i class="bi bi-telephone-fill" style="color: black"></i>{pageText[2]}</div>
+                    <div style="color: black"><i class="bi bi-clock-fill" style="color: black"></i>{pageText[3]}</div>
                 </div>
                 <div class="contact-form">
-                    <h2 style="color: black;">Contact Us</h2>
+                    <h2 style="color: black;">{pageText[4]}</h2>
                     <form class="contact" action="" method="post"></form>
                     <input type="text" name="name" class="text-box" placeholder="Your Name" bind:value={user} required>
                     <input type="email" name="email" class="text-box" placeholder="Your E-mail" bind:value={mail} required>
@@ -34,15 +44,15 @@ let text;
                             message:text
                         },
                         {
-                  headers: {
-                    "Content-Type": "application/json"
-                  }
-                });
-                push("/");
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                        push("/");
                     }}>
                 </div>
             </div>
-        </body>
+        </div>
 </main>
 
 <style>
@@ -56,14 +66,14 @@ let text;
     font-family: "Ubuntu" ,sans-serif;
 }
 
-body{
+.sec{
     min-height: 100vh;
-    background-image: url("../assets/Müşteri Hizmetleri Background.jpg") ;
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url("../assets/Müşteri Hizmetleri Background.jpg");
 }
 
 .contact-section{

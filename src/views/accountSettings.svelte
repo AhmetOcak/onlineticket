@@ -6,6 +6,8 @@
 
     let userInfos = "";
     let result = 0;
+    let pageTextData = "";
+    let pageImageData = "";
 
     let userName;
     let userBirthdate;
@@ -40,6 +42,9 @@
 
     onMount(async () => {
         try{
+            let pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/AccountSettings/61f91744b4961311f09c29cd")).data;
+            pageTextData = pageData.text;
+            pageImageData = pageData.images;
             let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
             userInfos = (await axios.get(userUrl)).data;
         }catch(e) {
@@ -66,23 +71,23 @@
 </script>
 <main>
     <Navbar/>
-    <div class="section">
-        <div class="text_hesap"><h1>Hesap Ayarları</h1></div>
+    <div class="section" id="sec" style="background-image: url({pageImageData});">
+        <div class="text_hesap"><h1>{pageTextData[0]}</h1></div>
         <div class="hesap">
           <div class="profile_tabShow">
             <div class="d-flex flex-column">
-              <h2>Ad Soyad</h2>
+              <h2>{pageTextData[1]}</h2>
             <input type="text" class="input" value={userInfos.firstName + " " + userInfos.lastName} id="Name"/>
-            <h2>E-mail</h2>
+            <h2>{pageTextData[2]}</h2>
             <input type="text" class="input" value={userInfos.email} id="Email"/>
-            <h2>Doğum Tarihi</h2>
+            <h2>{pageTextData[3]}</h2>
             <input type="date" class="input" value={userInfos.birthdate} id="Birthdate"/>
             </div>
-            <h2>TC Kimlik No</h2>
+            <h2>{pageTextData[4]}</h2>
             <input type="text" class="input" value={userInfos.tcNo} id="TcNo"/>
-            <h2>Cep Telefonu</h2>
+            <h2>{pageTextData[5]}</h2>
             <input type="text" class="input" value={userInfos.phoneNumber} id="PhoneNumber"/>
-            <h2>Cinsiyet</h2>
+            <h2>{pageTextData[6]}</h2>
             <input type="text" class="input" value={userInfos.gender} id="Gender"/>
             <button class="btn" on:click={() => {
               handleValues();
@@ -102,18 +107,18 @@
                     "Content-Type": "application/json"
                   }
               }).then(push('/'));
-            }}>Güncelle</button>
+            }}>{pageTextData[7]}</button>
           </div>
         </div>
         <div class="sifre_islemleri_text">
-          <h2>Şifre İşlemleri</h2>
+          <h2>{pageTextData[8]}</h2>
         </div>
         <div class="sifre_islemleri">
-          <h2>Eski Şifre</h2>
+          <h2>{pageTextData[9]}</h2>
           <input type="password" class="input_sifre" id="oldPassword"/>
-          <h2>Yeni Şifre</h2>
+          <h2>{pageTextData[10]}</h2>
           <input type="password" class="input_sifre" id="Password"/>
-          <h2>Yeni Şifre(Tekrar)</h2>
+          <h2>{pageTextData[11]}</h2>
           <input type="password" class="input_sifre" id="PasswordAgain"/>
           <button class="btn_sifre" on:click={() => {
             handleValues();
@@ -138,10 +143,10 @@
             else {
               console.log("password error");
             }
-          }}>Şifreyi Değiştir</button>
+          }}>{pageTextData[12]}</button>
           <h3 id="deleteAccount" on:click={() => {
             deleteUser();
-          }}>Üyeliğimi Silmek İstiyorum</h3>
+          }}>{pageTextData[13]}</h3>
         </div>
     </div>
 </main>
@@ -153,7 +158,6 @@
 .section{
     width: 100%;
     height: 170vh;
-    background-image: url("../assets/1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
