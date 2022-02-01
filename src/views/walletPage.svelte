@@ -6,6 +6,7 @@
     import axios from 'axios';
 
     let balance = 0;
+    let exchangeRate = 0;
     
     function getCookie(cookieName) {    
     let cookie = {};
@@ -16,10 +17,25 @@
     return cookie[cookieName];
     }
 
+    async function getExchangeRate() {
+        if(getCookie("currency") == "TL") {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f809af6a1589b78639c53b')).data.rate;
+            return exchangeRate;
+        }else if(getCookie("currency") == "USD") {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f80a0ba789e7ab01ddf744')).data.rate;
+            return exchangeRate;
+        }else {
+            exchangeRate = (await axios.get('https://onlineticketbackendapi.azure-api.net/v1/api/ExchangeRate/61f80a35a789e7ab01ddf745')).data.rate;
+            return exchangeRate;
+        }
+    }
+
     onMount(async () => {
         try{
             let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
             balance = (await axios.get(walletUrl)).data.balance;
+            balance = balance / (await getExchangeRate());
+            balance = Number(balance).toFixed(2);
             console.log(balance);
         }catch(e) {
             balance = "Ağ hatası";
@@ -43,7 +59,7 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Toplam Bakiye</h5>
-                    <p class="card-text text-primary fs-2">{balance}</p>
+                    <p class="card-text text-primary fs-2">{balance + " " + getCookie("currency")}</p>
                 </div>
             </div>
         </div>
