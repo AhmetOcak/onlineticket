@@ -7,6 +7,8 @@
 
     let balance = 0;
     let exchangeRate = 0;
+    let pageData = " ";
+    let pageImage = " ";
     
     function getCookie(cookieName) {    
     let cookie = {};
@@ -32,6 +34,8 @@
 
     onMount(async () => {
         try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WalletPage/61f91c3db4961311f09c29d3")).data.text;
+            pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WalletPage/61f91c3db4961311f09c29d3")).data.images;
             let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
             balance = (await axios.get(walletUrl)).data.balance;
             balance = balance / (await getExchangeRate());
@@ -45,19 +49,31 @@
 </script>
 
 <main>
-    <div class="section pb-5">
+    <div class="section pb-5" style="background-image: url({pageImage[1]});">
         <Navbar />
         <div class="section1 d-flex flex-row justify-content-around align-items-center pt-5">
             <div class="text-white">
-                <h4 class="pt-4">onlinepay</h4>
-                <h3>cüzdanım ile hızlı öde hep kazan</h3>
+                <h4 class="pt-4">
+                    {#if pageData[0] != null}
+                        {pageData[0]}
+                    {/if}
+                </h4>
+                <h3>
+                    {#if pageData[1] != null}
+                        {pageData[1]}
+                    {/if}
+                </h3>
             </div>
             <div class="card text-dark mb-3 mt-4 p-3 d-flex flex-row" style="max-width: 20rem;" id="card">
                 <div>
-                    <img src="../assets/wallet.png" alt=""> 
+                    <img src={pageImage[0]} alt=""> 
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Toplam Bakiye</h5>
+                    <h5 class="card-title">
+                        {#if pageData[2] != null}
+                            {pageData[2]}
+                        {/if}
+                    </h5>
                     <p class="card-text text-primary fs-2">{balance + " " + getCookie("currency")}</p>
                 </div>
             </div>
@@ -67,8 +83,16 @@
                 <li class="list-group-item">
                     <div class="card text-dark text-white mb-3" id="paymentSection">
                         <div class="card-body">
-                            <h5 class="card-title"><b class="fs-3">Şimdi yükle, hep kazan</b></h5>
-                            <p class="card-text fs-4">Kartından hemen yükle, Cüzdanım ile avantajlı alışverişin keyfini çıkart</p>
+                            <h5 class="card-title"><b class="fs-3">
+                                {#if pageData[3] != null}
+                                    {pageData[3]}
+                                {/if}
+                            </b></h5>
+                            <p class="card-text fs-4">
+                                {#if pageData[4] != null}
+                                    {pageData[4]}
+                                {/if}
+                            </p>
                             <BuyTicket buttonText="Bakiye Ekle" walletPageButton=true/>
                         </div>
                     </div>
@@ -83,7 +107,6 @@
     .section {
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/walletBG.png");
         background-repeat: no-repeat;
         background-size: cover;
         overflow: auto;
