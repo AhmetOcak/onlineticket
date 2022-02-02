@@ -43,7 +43,7 @@ import { onMount } from 'svelte';
         background-image: url("../assets/Help PageBG.jpg");
         background-repeat: no-repeat;
         background-size: cover;
-        overflow: hidden;
+        overflow: auto;
         
     }
 
@@ -53,7 +53,8 @@ import { onMount } from 'svelte';
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     border: solid 5px #64626F;
     padding: 20px;
-
+    margin-top: 400px;
+    margin-bottom: 100px;
 }
 
 .paragraph{

@@ -25,9 +25,8 @@ onMount(async () => {
         <Navbar />
             <!--Contact Section Start-->
             <div class="contact-section">
-               
                 <div class="contact-form">
-                    <h2 style="color: black;">{pageText[4]}</h2>
+                    <h2 style="color: black;">{pageText[0]}</h2>
                     <form class="contact" action="" method="post"></form>
                     <input type="text" name="name" class="text-box" placeholder="Your Name" bind:value={user} required>
                     <input type="email" name="email" class="text-box" placeholder="Your E-mail" bind:value={mail} required>
