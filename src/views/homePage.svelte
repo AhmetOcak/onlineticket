@@ -3,7 +3,7 @@
     import TicketSection from '../components/Home/ticketMenu.svelte';
     import Footer from '../components/Home/footer.svelte';
     import Announcement from '../components/Home/announcementHome.svelte';
-    import Campaigns from '../components/Home/campaignsHome.svelte'
+    import Campaigns from '../components/Home/campaignsHome.svelte';
 </script>
 
 <main>

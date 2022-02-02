@@ -1,6 +1,18 @@
 <!-- Ahmet Ocak -->
 <script>
     import { link } from 'svelte-spa-router';
+    import { onMount } from 'svelte';
+    import axios from 'axios';
+
+    let pageData = ""; 
+
+    onMount(async () => {
+        try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/HomePage/61f9157fb4961311f09c29ca")).data.footer;
+        }catch(e) {
+            console.log(e);
+        } 
+    });
 </script>
 
 <main>
@@ -8,36 +20,36 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 col-xs-12">
-                    <h2>Online Bilet Sitesi</h2>
-                    <p class="pr-5 text-white-50">Türkiye'nin en güvenilir uçak ve bilet sitesi. </p>
+                    <h2>{pageData[0]}</h2>
+                    <p class="pr-5 text-white-50">{pageData[1]} </p>
                     <p>
-                        <a href="/faqPage" use:link ><i>Sıkça Sorulan Sorular</i></a>
+                        <a href="/faqPage" use:link ><i>{pageData[2]}</i></a>
                         <br>
-                        <a href="/helpPage" use:link><i>Yardım</i></a>
+                        <a href="/helpPage" use:link><i>{pageData[3]}</i></a>
                         <br>
-                        <a href="/customerServicePage" use:link><i>Müşteri Hizmetleri</i></a>
+                        <a href="/customerServicePage" use:link><i>{pageData[4]}</i></a>
                     </p>
                 </div>
                 <div class="col-lg-3 col-xs-12">
-                    <h4 class="mt-lg-0 mt-sm-3">Bizi takip edin</h4>
+                    <h4 class="mt-lg-0 mt-sm-3">{pageData[5]}</h4>
                         <ul class="m-0 p-0">
-                        <li>- <a href="https://www.facebook.com/" target="blank">Facebook</a></li>
-                        <li>- <a href="https://www.instagram.com/" target="blank">Instagram</a></li>
-                        <li>- <a href="https://twitter.com/login?lang=tr" target="blank">Twitter</a></li>
-                        <li>- <a href="https://web.telegram.org/" target="blank">Telegram</a></li>
-                        <li>- <a href="https://web.bip.com/" target="blank">Bip</a></li>
+                        <li>- <a href="https://www.facebook.com/" target="blank">{pageData[6]}</a></li>
+                        <li>- <a href="https://www.instagram.com/" target="blank">{pageData[7]}</a></li>
+                        <li>- <a href="https://twitter.com/login?lang=tr" target="blank">{pageData[8]}</a></li>
+                        <li>- <a href="https://web.telegram.org/" target="blank">{pageData[9]}</a></li>
+                        <li>- <a href="https://web.bip.com/" target="blank">{pageData[10]}</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-xs-12">
-                    <h4>Adres ve İletişim</h4>
-                    <p class="text-white-50">Isparta Merkez, Türkiye</p>
-                    <p class="mb-1 text-white-50"><i class="bi bi-telephone-fill text-white"></i> 0850 555 55 55</p>
-                    <p class="text-white-50"><i class="bi bi-envelope-fill text-white"></i> info@onlinebilet.com</p>
+                    <h4>{pageData[11]}</h4>
+                    <p class="text-white-50">{pageData[12]}</p>
+                    <p class="mb-1 text-white-50"><i class="bi bi-telephone-fill text-white"></i> {pageData[13]}</p>
+                    <p class="text-white-50"><i class="bi bi-envelope-fill text-white"></i> {pageData[14]}</p>
                 </div>
                 </div>
                 <div class="row mt-5">
                     <div class="col">
-                        <p class=""><small class="text-white-50">© 2022. All Rights Reserved.</small></p>
+                        <p class=""><small class="text-white-50">{pageData[15]}</small></p>
                     </div>
                 </div>
             </div>

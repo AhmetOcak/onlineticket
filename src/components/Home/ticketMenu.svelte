@@ -17,6 +17,8 @@
     let date = "";
     let arrivalPlace = "";
     let departurePlace = "";
+    let pageData = ""; 
+    let pageIcon = "../assets/mainPageBG.png";
 
     $searchRequest = {
         date: date,
@@ -27,6 +29,8 @@
     onMount(async () => {
         try {
             cities = await (await axios.get(citiesUrl)).data[0].citiess;
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/HomePage/61f9157fb4961311f09c29ca")).data.ticketSection;
+            pageIcon = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/HomePage/61f9157fb4961311f09c29ca")).data.images;
         }
         catch(e) {
             console.log(e);
@@ -51,34 +55,34 @@
 </script>
 
 <main>
-    <div class="ticketsection">
+    <div class="ticketsection" style="background-image: url({pageIcon[2]});">
         <div class="searchbox">
             <div class="buttons">
-                <button on:click={selectCard} class:active={isActive}><img src={busIcon} alt="">Otobüs</button>
-                <button on:click={selectCard} class:active={!isActive}><img src={planeIcon} alt="">Uçak</button>
+                <button on:click={selectCard} class:active={isActive}><img src={busIcon} alt="">{pageData[0]}</button>
+                <button on:click={selectCard} class:active={!isActive}><img src={planeIcon} alt="">{pageData[1]}</button>
             </div>
             <ul>
                 {#if showCard}
                 <li>
                     <div class="card">
                         <form class="form fs-5">
-                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>Kalkış Noktası</label>
+                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[2]}</label>
                             <select id="kalkis" class="py-3 mb-3" >
                                 {#each cities as city}
                                 <option id="departure">{city}</option>
                                 {:else}
-                                <option value="veritabanı">Loading</option>
+                                <option value="veritabanı">{pageData[4]}</option>
                                 {/each}
                             </select>
-                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>Varış Noktası</label>
+                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[3]}</label>
                             <select id="varis" class="py-3 mb-3">
                                 {#each cities as city}
                                 <option id="arrival">{city}</option>
                                 {:else}
-                                <option value="veritabanı">Loading</option>
+                                <option value="veritabanı">{pageData[4]}</option>
                                 {/each}
                             </select>
-                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>Yolculuk Tarihi</label>
+                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>{pageData[5]}</label>
                             <input type="date" id="tarih" class="p-3" required />
                             <button type="button" class="btn btn-dark mt-4 p-3 fs-4" id="button" on:click={() => {
                                 if(dateChecker() == true) {
@@ -87,7 +91,7 @@
                                 else {
                                     console.log("tarih boş");
                                 }
-                            }}>Uçak Bileti Bul</button>
+                            }}>{pageData[6]}</button>
                         </form>
                     </div>
                 </li>
@@ -96,23 +100,23 @@
                 <li>
                     <div class="card">
                         <form class="form fs-5">
-                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>Kalkış Noktası</label>
+                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[2]}</label>
                             <select id="kalkis" class="py-3 mb-3" >
                                 {#each cities as city}
                                 <option id="departure">{city}</option>
                                 {:else}
-                                <option value="veritabanı">Loading</option>
+                                <option value="veritabanı">{pageData[4]}</option>
                                 {/each}
                             </select>
-                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>Varış Noktası</label>
+                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[3]}</label>
                             <select id="varis" class="py-3 mb-3">
                                 {#each cities as city}
                                 <option id="arrival">{city}</option>
                                 {:else}
-                                <option value="veritabanı">Loading</option>
+                                <option value="veritabanı">{pageData[4]}</option>
                                 {/each}
                             </select>
-                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>Yolculuk Tarihi</label>
+                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>{pageData[5]}</label>
                             <input type="date" id="tarih" class="p-3" required />
                             <button type="button" class="btn btn-dark mt-4 p-3 fs-4" id="button" on:click={() => {
                                 if(dateChecker() == true) {
@@ -121,7 +125,7 @@
                                 else {
                                     console.log("tarih boş");
                                 }
-                            }}>Otobüs Bileti Bul</button>
+                            }}>{pageData[7]}</button>
                         </form>
                     </div>
                 </li>
@@ -133,7 +137,6 @@
 
 <style>
     .ticketsection {
-        background-image: url("../assets/mainPageBG.png");
         background-repeat: no-repeat;
         background-size: 100% 1000px;
         display: flex;
