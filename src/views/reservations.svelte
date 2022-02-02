@@ -17,9 +17,12 @@
     let ib = 0; // otobüs için sayaç
     let lp = 0; // uçak için sayaç
 
+    let pageData = "";
+
     onMount(async () => {
       loading = true;
       try{
+        pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.reservation;
         reservations = (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${getCookie("userId")}`)).data.reservations;
         for(let i = 0; i < reservations.length; i++) {
           if(reservations[i].travelTypeId == 0) {
@@ -69,9 +72,13 @@
 <main>
     <Navbar/>
         <div class="text">
-            <h1>Rezervasyonlarım</h1>
+            <h1>
+              {#if pageData[0] != null}
+                  {pageData[0]}
+              {/if}
+            </h1>
         </div>
-        <div class="section">
+        <div class="section" style="background-image: url({pageData[1]});">
             <ul class="box_seyehatlerim">
                 {#each {length: travels.length} as _, i}
                   <li><Reservations arrivalPlace={travels[i].arrivalPlace} departurePlace={travels[i].departurePlace} arrivalTime={travels[i].arrivalTime} departureTime={travels[i].departureTime} transport={(travels[i].travelType)} passengerTc={reservations[i].passengerTc} travelId={reservations[i].id} r="Rezervasyon Id"/></li>
@@ -103,7 +110,6 @@
 .section {
     width: 100%;
     height: 170vh;
-    background-image: url("../assets/12345.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "Poppins", sans-serif;

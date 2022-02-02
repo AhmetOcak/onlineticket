@@ -13,9 +13,12 @@
     let ticketInfo = [];
     let loading;
 
+    let pageData = "";
+
     onMount(async () => {
         loading = true;
         try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.buyTicket;
             ticketInfo[0] = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Bus_Travels/${$selectedTicketId}`)).data;
             loading = false;
         }catch(e) {
@@ -26,7 +29,7 @@
 </script>
 
 <main>
-    <div class="section d-flex flex-column justify-content-center">
+    <div class="section d-flex flex-column justify-content-center" style="background-image: url({pageData[1]});">
         <Navbar />
         <TicketCancelModal />
         <div class="container">
@@ -43,7 +46,7 @@
                     {/if}
                 {/each}
             </div>
-            <BuyTicket buttonText='Ödeme Yap' showUserInfo=true travelType="0"/>
+            <BuyTicket buttonText={pageData[0]} showUserInfo=true travelType="0"/>
         </div>
     </div>
 </main>
@@ -52,7 +55,6 @@
     .section {
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/busBG.png");
         background-repeat: no-repeat;
         background-size: cover;
         overflow: auto;
