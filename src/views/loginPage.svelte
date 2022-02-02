@@ -2,9 +2,13 @@
   import Navbar from "../components/Navbar/navbar.svelte";
   import axios from 'axios';
   import { push } from 'svelte-spa-router';
+  import { onMount } from 'svelte';
 
   let userEmail;
   let userPassword;
+
+  let pageData = " ";
+  let pageImage = " ";
 
   async function takeCookie() {
     var cookie = await axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/Auth/login`, {
@@ -36,6 +40,16 @@
     document.cookie = `userId=${user.data.id}`;
   }
 
+  onMount(async () => {
+        try{
+          pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/LoginPage/61f9160ab4961311f09c29cb")).data.text;
+          pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/LoginPage/61f9160ab4961311f09c29cb")).data.images;
+          console.log(pageData);
+        }catch(e) {
+            console.log(e);
+        } 
+    });
+
 </script>
 <main>
     <div class="container">
@@ -43,7 +57,7 @@
         <div class="forms-container">
           <div class="signin-signup">
             <form action="#" class="sign-in-form">
-              <h2 class="title">Giriş Yap</h2>
+              <h2 class="title">{pageData[0]}</h2>
               <div class="input-field">
                 <i class="bi bi-envelope"></i>
                 <input bind:value={userEmail} type="email" placeholder="E-mail" required/>
@@ -55,7 +69,7 @@
               <input class="btn solid" type="button" value="Giriş Yap" on:click={() => {
                 takeCookie();
               }} />
-              <p class="social-text">Veya sosyal platformlarla oturum açın</p>
+              <p class="social-text">{pageData[1]}</p>
               <div class="social-media">
                 <a href="https://www.facebook.com/" class="social-icon">
                   <i class="bi bi-facebook"></i>
@@ -75,7 +89,7 @@
         </div>
         <div class="panels-container">
           <div class="panel left-panel">
-            <img src="assets/log.png" class="image" alt="" />
+            <img src="{pageImage[0]}" class="image" alt="" />
           </div>
         </div>
       </div>
