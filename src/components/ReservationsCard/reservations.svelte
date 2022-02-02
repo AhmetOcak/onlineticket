@@ -7,6 +7,18 @@
     export let passengerTc;
     export let travelId;
     export let r;
+    import { onMount } from 'svelte';
+    import axios from 'axios';
+
+    let pageData = " ";
+
+    onMount(async () => {
+            try{
+                pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/ReservationCard/61f9204648106f21e53235f7")).data.text;
+            }catch(e) {
+            console.log(e);
+            } 
+        });
 
     function selectTransport() {
         if(transport == 0) {
@@ -23,32 +35,60 @@
     <div class="ticket1">
         <div class="d-flex flex-row justify-content-between align-items-center">
             <div id="tur" class="row justify-content-center mb-4">
-                <h3 class="mt-2">{selectTransport()} Bileti</h3>
+                <h3 class="mt-2">{selectTransport()} 
+                    {#if pageData[0] != null}
+                        {pageData[0]}
+                    {/if}
+                </h3>
                 {#if selectTransport() == "Otobüs"}
                 <i class="fas fa-bus fa-3x"></i> <br>
                 {:else if selectTransport() == "Uçak"}
                 <i class="fas fa-plane fa-3x"></i> <br>
                 {:else}
-                <i>Error</i> <br>
+                <i>
+                    {#if pageData[1] != null}
+                        {pageData[1]}
+                    {/if}
+                </i> <br>
                 {/if}
                 <button type="button" class="btn btn-outline-secondary">
                     <div class="d-flex justify-content-center">
                         <i class="bi bi-box-arrow-in-down me-2 mt-1"></i>
-                        <span style="font-size: 1.3rem;">İndir</span>
+                        <span style="font-size: 1.3rem;">
+                            {#if pageData[2] != null}
+                                {pageData[2]}
+                            {/if}
+                        </span>
                     </div>
                 </button>
             </div>
             <div id="gidis" class="pt-5">
                 <h2>{departurePlace}</h2>
-                <h3 class="pt-2">Gidiş: {departureTime}</h3>
+                <h3 class="pt-2">
+                    {#if pageData[3] != null}
+                        {pageData[3]} {departureTime}
+                    {/if}
+                    </h3>
             </div>
             <div id="tc" class="pt-5">
-                <h2>Yolcunun Kimlik Numarası</h2>
-                <h3 class="pt-2">Tc: {passengerTc}</h3>
+                <h2>
+                    {#if pageData[4] != null}
+                        {pageData[4]}
+                    {/if}
+                </h2>
+                <h3 class="pt-2">
+                    {#if pageData[5] != null}
+                        {pageData[5]} {passengerTc}
+                    {/if}
+                    </h3>
             </div>
             <div id="varis" class="pt-5">
                 <h2>{arrivalPlace}</h2>
-                <h3 class="pt-2">Varış: {arrivalTime}</h3>
+                <h3 class="pt-2">
+                    {#if pageData[6] != null}
+                        {pageData[6]} {arrivalTime}
+                    {/if}
+                </h3>
                 <div id="reservationId" class="pt-4 mt-4">
                     <h2>{r}</h2>
                     <h3>{travelId}</h3>

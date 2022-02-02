@@ -18,6 +18,7 @@
     export let id;
 
     let exchangeRate = 0;
+    let pageData = " ";
     
     function getCookie(cookieName) {    
     let cookie = {};
@@ -43,9 +44,9 @@
 
     onMount(async () => {
         try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/TicketCard/61f91d50b4961311f09c29d4")).data.text;
             price = price / (await getExchangeRate());
             price = Number(price).toFixed(2);
-            console.log(price);
         }catch(e) {
             price = "Ağ hatası";
             console.log(e);
@@ -60,31 +61,51 @@
         <div class="card-header fs-4 d-flex flex-row justify-content-between">
             {companyName}
             {#if cancelTheTicket}
-                <button type="button" class="btn btn-danger p-3 fs-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Bileti iptal et</button>
+                <button type="button" class="btn btn-danger p-3 fs-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    {#if pageData[0] != null}
+                        {pageData[0]}
+                    {/if}
+                </button>
             {/if}
         </div>
         <div class="card-body d-flex flex-row justify-content-between">
             <div class="d-flex align-item-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <h4>Kalkış</h4>
+                    <h4>
+                        {#if pageData[1] != null}
+                            {pageData[1]}
+                        {/if}
+                    </h4>
                     <p>{departureTime}</p>
                 </div>
             </div>
             <div class="d-flex align-item-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <h4>Süre</h4>
+                    <h4>
+                        {#if pageData[2] != null}
+                            {pageData[2]}
+                        {/if}
+                    </h4>
                     <p>{durationTime}</p>
                 </div>
             </div>
             <div class="d-flex align-item-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <h4>Varış</h4>
+                    <h4>
+                        {#if pageData[3] != null}
+                            {pageData[3]}
+                        {/if}
+                    </h4>
                     <p>{arrivalTime}</p>
                 </div>
             </div>
             <div class="d-flex align-item-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <h4>Fiyat</h4>
+                    <h4>
+                        {#if pageData[4] != null}
+                            {pageData[4]}
+                        {/if}
+                    </h4>
                     <p>{price + " " + getCookie("currency")}</p>
                 </div>
             </div>
@@ -98,11 +119,19 @@
         {#if cancelTheTicket}
             <div class="d-flex flex-row justify-content-between ms-3 me-3">
                 <div class="d-flex flex-column justify-content-center align-item-center">
-                    <h4>Kalkış Yeri</h4>
+                    <h4>
+                        {#if pageData[5] != null}
+                            {pageData[5]}
+                        {/if}
+                    </h4>
                     <p>{departurePlace}</p>
                 </div>
                 <div class="d-flex flex-column justify-content-center align-item-center">
-                    <h4>Varış Yeri</h4>
+                    <h4>
+                        {#if pageData[6] != null}
+                            {pageData[6]}
+                        {/if}
+                    </h4>
                     <p>{arrivalPlace}</p>
                 </div>
             </div>

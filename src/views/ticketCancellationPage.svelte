@@ -2,13 +2,24 @@
 <script>
 import Navbar from "../components/Navbar/navbar.svelte";
 import axios from 'axios';
-import {
-    toast
-} from '@zerodevx/svelte-toast'
+import { onMount } from 'svelte';
+import { toast } from '@zerodevx/svelte-toast'
 
 let reservationId;
 let tcNo;
 let result = 0;
+
+let pageData = " ";
+let pageImage = " ";
+
+onMount(async () => {
+        try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/TicketCancelPage/61f91becb4961311f09c29d2")).data.text;
+            pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/TicketCancelPage/61f91becb4961311f09c29d2")).data.images;
+        }catch(e) {
+            console.log(e);
+        } 
+    });
 
 function getCookie(cookieName) {
     let cookie = {};
@@ -26,15 +37,23 @@ async function deleteReservation() {
 </script>
 
 <main>
-    <div class="section">
+    <div class="section" style="background-image: url({pageImage});">
         <Navbar />
         <div class="card ds-flex flex-column justify-content-center">
             <div class="ticketID d-flex flex-column pb-3 fs-4">
-                <label for="bid" class="fs-4 ms-3">Rezervasyon ID</label>
+                <label for="bid" class="fs-4 ms-3">
+                    {#if pageData[0] != null}
+                        {pageData[0]}
+                    {/if}
+                </label>
                 <input type="text" id="bid" class="input" bind:value={reservationId} required>
             </div>
             <div class="userName d-flex flex-column">
-                <label for="un" class="fs-4 ms-3">Yolcunun Kimlik Numarası</label>
+                <label for="un" class="fs-4 ms-3">
+                    {#if pageData[1] != null}
+                        {pageData[1]}
+                    {/if}
+                </label>
                 <input type="text" id="un" class="input fs-4" bind:value={tcNo} required>
             </div>
             <div class="button d-flex flex-row-reverse p-4">
@@ -73,7 +92,6 @@ async function deleteReservation() {
 
 <style>
 .section {
-    background-image: url("../assets/ticketcancelbg.png");
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;

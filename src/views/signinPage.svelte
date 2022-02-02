@@ -1,11 +1,15 @@
 <script>
   import Navbar from "../components/Navbar/navbar.svelte";
   import axios from 'axios';
+  import { onMount } from 'svelte';
 
   let userEmail;
   let userPassword;
   let userFirstName;
   let userLastName;
+
+  let pageData = " ";
+  let pageImage = " ";
 
   function handleSignInfo() {
     userEmail = email.value;
@@ -14,6 +18,14 @@
     userLastName = lastName.value;
   }
   
+  onMount(async () => {
+            try{
+                pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/SigninPage/61f916b2b4961311f09c29cc")).data.text;
+                pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/SigninPage/61f916b2b4961311f09c29cc")).data.images;
+            }catch(e) {
+            console.log(e);
+            } 
+        });
 </script>
 <main>
     <div class="container">
@@ -21,7 +33,11 @@
         <div class="forms-container">
           <div class="signin-signup">
             <form action="#" class="sign-in-form">
-              <h2 class="title">Üye Ol</h2>
+              <h2 class="title">
+                {#if pageData[0] != null}
+                    {pageData[0]}
+                {/if}
+              </h2>
               <div class="input-field">
                 <i class="bi bi-person-circle"></i>
                 <input type="text" placeholder="Ad" id="firstName" required/>
@@ -57,7 +73,7 @@
         </div>
         <div class="panels-container mt-5">
           <div class="panel left-panel">
-            <img src="assets/plane_uyeol.png" class="image" alt="" />
+            <img src={pageImage} class="image" alt="" />
           </div>
         </div>
       </div>
