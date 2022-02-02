@@ -55,7 +55,7 @@
 </script>
 
 <main>
-    <div class="ticketsection" style="background-image: url({pageIcon[2]});">
+    <div class="ticketsection" style="background-image: url({pageIcon[0]});">
         <div class="searchbox">
             <div class="buttons">
                 <button on:click={selectCard} class:active={isActive}><img src={busIcon} alt="">{pageData[0]}</button>

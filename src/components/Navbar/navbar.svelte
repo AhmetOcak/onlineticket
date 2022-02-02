@@ -37,7 +37,7 @@
 <main>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark py-3 fixed-top">
         <div class="container">
-            <a href="/" class="navbar-brand fs-3"><img src="{pageIcon[3]}" alt=""></a>
+            <a href="/" class="navbar-brand fs-3"><img src="{pageIcon[1]}" alt=""></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu"><span
                     class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navmenu">
