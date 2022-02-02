@@ -6,11 +6,13 @@
     let title = "";
     let text = "";
 
+    let pageImage = "";
+
     onMount(async () => {
         try{
+            pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.campaigns;
             let campaign1Url = `https://onlineticketbackendapi.azure-api.net/v1/api/Campaigns/61d70971ae96d43e0f62375f`;
-             data = (await axios.get(campaign1Url)).data;
-            console.log(data.title);
+            data = (await axios.get(campaign1Url)).data;
             title = data.title;
             text = data.text;
         }catch(e) {
@@ -21,7 +23,7 @@
 </script>
 
 <main>
-    <div class="section d-flex justify-content-center align-items-center ">
+    <div class="section d-flex justify-content-center align-items-center " style="background-image: url({pageImage[0]});">
         <Navbar />
         
 
@@ -39,7 +41,6 @@
     .section{
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/Campaign1 PageBG.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         overflow: hidden;

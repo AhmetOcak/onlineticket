@@ -24,8 +24,11 @@ import { onMount } from 'svelte';
     let question7 = "";
     let answer7 = "";
 
+    let pageImage = "";
+
     onMount(async () => {
         try{
+            pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.faq;
             let faqsUrl1 = `https://onlineticketbackendapi.azure-api.net/v1/api/Faq/61d74b73e6c2ed71088e4b5c`;
             data1 = (await axios.get(faqsUrl1)).data;
             question1 = data1.question;
@@ -63,7 +66,7 @@ import { onMount } from 'svelte';
 </script>
 
 <main>
-    <div class="section d-flex justify-content-center align-items-center ">
+    <div class="section d-flex justify-content-center align-items-center " style="background-image: url({pageImage});">
         <Navbar />
 
         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -146,7 +149,6 @@ import { onMount } from 'svelte';
     .section{
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/Sık Sorulan Sorular Background.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         overflow: hidden;

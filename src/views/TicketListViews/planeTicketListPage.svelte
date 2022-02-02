@@ -13,9 +13,12 @@
     let searchResult = [];
     let loading;
 
+    let pageImage = "";
+
     onMount(async () => {
         loading = true;
         try {
+            pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.ticketList;
             searchResult = await (await axios.get(`https://onlineticketbackendapi.azure-api.net/v1/api/Plane_Travels/${$searchRequest.departurePlace}/${$searchRequest.arrivalPlace}/${$searchRequest.date}`)).data;
             loading = false;
         }catch(e) {
@@ -26,7 +29,7 @@
 </script>
 
 <main>
-    <div class="section d-flex flex-column justify-content-center">
+    <div class="section d-flex flex-column justify-content-center" style="background-image: url({pageImage[1]});">
         <Navbar />
         <div class="container  d-flex flex-column justify-content-start align-items-center">
             <ul class="list-group">
@@ -50,7 +53,6 @@
     .section {
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/planeBG.png");
         background-repeat: no-repeat;
         background-size: cover;
     }

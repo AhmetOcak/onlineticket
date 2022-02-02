@@ -1,12 +1,15 @@
 <script>
-import Navbar from "../components/Navbar/navbar.svelte";
-import { onMount } from 'svelte';
+    import Navbar from "../components/Navbar/navbar.svelte";
+    import { onMount } from 'svelte';
     import axios from 'axios';
+
     let data = [];
     let text = "";
+    let pageData = "";
 
     onMount(async () => {
         try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.help;
             let helpUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Help/`;
             data = (await axios.get(helpUrl)).data;
         }catch(e) {
@@ -17,19 +20,27 @@ import { onMount } from 'svelte';
 </script>
 
 <main>
-    <div class="section d-flex justify-content-center align-items-center ">
+    <div class="section d-flex justify-content-center align-items-center " style="background-image: url({pageData[2]});">
 
     <Navbar />
 
         <div class="blog">
 
-            <h2>YARDIM</h2>
+            <h2>
+                {#if pageData[0] != null}
+                    {pageData[0]}
+                {/if}
+            </h2>
             {#each {length: data.length} as _,i}
             <p class="paragraph">
                 {data[i].text}
             </p>
             {:else}
-            <p>loading</p>
+            <p>
+                {#if pageData[1] != null}
+                    {pageData[1]}
+                {/if}
+            </p>
             {/each}
 
         </div>
@@ -40,7 +51,6 @@ import { onMount } from 'svelte';
     .section{
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/Help PageBG.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         overflow: auto;

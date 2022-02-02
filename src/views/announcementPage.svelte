@@ -18,9 +18,11 @@ import { onMount } from 'svelte';
     let title5 = "";
     let text5= "";
 
+    let pageImage = " ";
 
     onMount(async () => {
         try{
+            pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.announcement;
             let faqsUrl1 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d7326de6c2ed71088e4b56`;
             data1 = (await axios.get(faqsUrl1)).data;
             title1 = data1.title;
@@ -48,7 +50,7 @@ import { onMount } from 'svelte';
 </script>
 
 <main>
-    <div class="section d-flex justify-content-center align-items-center ">
+    <div class="section d-flex justify-content-center align-items-center " style="background-image: url({pageImage});">
         <Navbar />
 
         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -110,7 +112,6 @@ import { onMount } from 'svelte';
     .section{
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/Announcement PageBG.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         overflow: hidden;
