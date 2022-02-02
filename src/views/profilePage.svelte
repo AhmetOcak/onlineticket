@@ -4,6 +4,8 @@ import { onMount } from 'svelte';
 import axios from 'axios';
 
 let data = "";
+let pageData = " ";
+let pageImage = " ";
 
 function getCookie(cookieName) {
     let cookie = {};
@@ -17,9 +19,10 @@ function getCookie(cookieName) {
 
     onMount(async () => {
         try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/ProfilePage/61f91b7bb4961311f09c29d1")).data.text;
+            pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/ProfilePage/61f91b7bb4961311f09c29d1")).data.images;
             let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
             data = (await axios.get(userUrl)).data;
-            console.log(data);
         }catch(e) {
             console.log(e);
         } 
@@ -28,7 +31,7 @@ function getCookie(cookieName) {
 </script>
 
 <main>
-    <div class="section d-flex justify-content-center align-items-center ">
+    <div class="section d-flex justify-content-center align-items-center" style="background-image: url({pageImage});">
 
     <Navbar />
         <div class="container">
@@ -37,14 +40,22 @@ function getCookie(cookieName) {
 
                     <div class="col-md-8 mt-1">
                         <div class="card mb-3 content">
-                            <h1 class="m-3 pt-3">Profil</h1>
+                            <h1 class="m-3 pt-3">
+                                {#if pageData[0] != null}
+                                    {pageData[0]}
+                                {/if}
+                            </h1>
                             <div class="card-body">
                                 <hr>
                                 <hr>
 
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <h5>Cinsiyet:</h5>
+                                        <h5>
+                                            {#if pageData[1] != null}
+                                                {pageData[1]}
+                                            {/if}
+                                        </h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
                                         {data.gender}
@@ -53,7 +64,11 @@ function getCookie(cookieName) {
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <h5>İsim:</h5>
+                                        <h5>
+                                            {#if pageData[2] != null}
+                                                {pageData[2]}
+                                            {/if}
+                                        </h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
                                         {data.firstName}
@@ -62,7 +77,11 @@ function getCookie(cookieName) {
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <h5>Soy İsim:</h5>
+                                        <h5>
+                                            {#if pageData[3] != null}
+                                                {pageData[3]}
+                                            {/if}
+                                        </h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
                                         {data.lastName}
@@ -71,7 +90,11 @@ function getCookie(cookieName) {
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <h5>Doğum Tarihi:</h5>
+                                        <h5>
+                                            {#if pageData[4] != null}
+                                                {pageData[4]}
+                                            {/if}
+                                        </h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
                                         {data.birthdate}
@@ -80,7 +103,11 @@ function getCookie(cookieName) {
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <h5>T.C. Kimlik No:</h5>
+                                        <h5>
+                                            {#if pageData[5] != null}
+                                                {pageData[5]}
+                                            {/if}
+                                        </h5>
                                     </div>
                                     <div class="col-md-9 text-secondary">
                                         {data.tcNo}
@@ -88,7 +115,11 @@ function getCookie(cookieName) {
                                     <hr>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <h5>E-mail:</h5>
+                                            <h5>
+                                                {#if pageData[6] != null}
+                                                    {pageData[6]}
+                                                {/if}
+                                            </h5>
                                         </div>
                                         <div class="col-md-9 text-secondary">
                                             {data.email}
@@ -96,7 +127,11 @@ function getCookie(cookieName) {
                                         <hr>
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <h5>Cep Telefonu:</h5>
+                                                <h5>
+                                                    {#if pageData[7] != null}
+                                                        {pageData[7]}
+                                                    {/if}
+                                                </h5>
                                             </div>
                                             <div class="col-md-9 text-secondary">
                                                 {data.phoneNumber}
@@ -119,7 +154,6 @@ function getCookie(cookieName) {
     .section{
         width: 100%;
         height: 100vh;
-        background-image: url("../assets/Profile PageBG.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         background-position:center;

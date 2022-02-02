@@ -72,7 +72,7 @@
                     </th>
                     <th>
                         {#if pageData[9] != null}
-                        {pageData[9]} 
+                            {pageData[9]} 
                         {/if}
                         <br>
                         {#if pageData[10] != null} 
