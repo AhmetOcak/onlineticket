@@ -48,7 +48,11 @@
     <div class="section d-flex flex-column justify-content-center">
         <Navbar />
         <div class="container d-flex flex-column justify-content-start align-items-center">
-            <h1 class="pt-3">{title[0]}</h1>
+            <h1 class="pt-3">
+                {#if title[0] != null}
+                    {title[0]}
+                {/if}        
+            </h1>
             <ul class="list-group">
                 {#each {length: bills.length} as _, i}
                     <li>

@@ -72,22 +72,50 @@
 <main>
     <Navbar/>
     <div class="section" id="sec" style="background-image: url({pageImageData});">
-        <div class="text_hesap"><h1>{pageTextData[0]}</h1></div>
+        <div class="text_hesap"><h1>
+          {#if pageTextData[0] != null}
+            {pageTextData[0]}
+          {/if}
+        </h1></div>
         <div class="hesap">
           <div class="profile_tabShow">
             <div class="d-flex flex-column">
-              <h2>{pageTextData[1]}</h2>
+              <h2>
+                {#if pageTextData[1] != null}
+                  {pageTextData[1]}
+                {/if}
+              </h2>
             <input type="text" class="input" value={userInfos.firstName + " " + userInfos.lastName} id="Name"/>
-            <h2>{pageTextData[2]}</h2>
+            <h2>
+              {#if pageTextData[2] != null}
+                {pageTextData[2]}
+              {/if}
+            </h2>
             <input type="text" class="input" value={userInfos.email} id="Email"/>
-            <h2>{pageTextData[3]}</h2>
+            <h2>
+              {#if pageTextData[3] != null}
+                {pageTextData[3]}
+              {/if}
+            </h2>
             <input type="date" class="input" value={userInfos.birthdate} id="Birthdate"/>
             </div>
-            <h2>{pageTextData[4]}</h2>
+            <h2>
+              {#if pageTextData[4] != null}
+                {pageTextData[4]}
+              {/if}
+            </h2>
             <input type="text" class="input" value={userInfos.tcNo} id="TcNo"/>
-            <h2>{pageTextData[5]}</h2>
+            <h2>
+              {#if pageTextData[5] != null}
+                {pageTextData[5]}
+              {/if}
+            </h2>
             <input type="text" class="input" value={userInfos.phoneNumber} id="PhoneNumber"/>
-            <h2>{pageTextData[6]}</h2>
+            <h2>
+              {#if pageTextData[6] != null}
+                {pageTextData[6]}
+              {/if}
+            </h2>
             <input type="text" class="input" value={userInfos.gender} id="Gender"/>
             <button class="btn" on:click={() => {
               handleValues();
@@ -107,18 +135,38 @@
                     "Content-Type": "application/json"
                   }
               }).then(push('/'));
-            }}>{pageTextData[7]}</button>
+            }}>
+            {#if pageTextData[7] != null}
+              {pageTextData[7]}
+            {/if}
+          </button>
           </div>
         </div>
         <div class="sifre_islemleri_text">
-          <h2>{pageTextData[8]}</h2>
+          <h2>
+            {#if pageTextData[8] != null}
+              {pageTextData[8]}
+            {/if}
+          </h2>
         </div>
         <div class="sifre_islemleri">
-          <h2>{pageTextData[9]}</h2>
+          <h2>
+            {#if pageTextData[9] != null}
+              {pageTextData[9]}
+            {/if}
+          </h2>
           <input type="password" class="input_sifre" id="oldPassword"/>
-          <h2>{pageTextData[10]}</h2>
+          <h2>
+            {#if pageTextData[10] != null}
+              {pageTextData[10]}
+            {/if}
+          </h2>
           <input type="password" class="input_sifre" id="Password"/>
-          <h2>{pageTextData[11]}</h2>
+          <h2>
+            {#if pageTextData[11] != null}
+              {pageTextData[11]}
+            {/if}
+          </h2>
           <input type="password" class="input_sifre" id="PasswordAgain"/>
           <button class="btn_sifre" on:click={() => {
             handleValues();
@@ -143,10 +191,18 @@
             else {
               console.log("password error");
             }
-          }}>{pageTextData[12]}</button>
+          }}>
+          {#if pageTextData[12] != null}
+            {pageTextData[12]}
+          {/if}
+        </button>
           <h3 id="deleteAccount" on:click={() => {
             deleteUser();
-          }}>{pageTextData[13]}</h3>
+          }}>
+          {#if pageTextData[13] != null}
+            {pageTextData[13]}
+          {/if}
+        </h3>
         </div>
     </div>
 </main>

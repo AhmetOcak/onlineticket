@@ -44,18 +44,34 @@
                 <ul class="navbar-nav ms-auto">
                     {#if checkCurrentUser()}
                     <li class="nav-item">
-                        <a href="/ticketCancellationPage" use:link class="nav-link"><i class="bi bi-x-circle pe-1"></i><p>{pageData[0]}</p></a>
+                        <a href="/ticketCancellationPage" use:link class="nav-link"><i class="bi bi-x-circle pe-1"></i><p>
+                            {#if pageData[0] != null}
+                                {pageData[0]}
+                            {/if}
+                        </p></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/reservations" use:link class="nav-link"><i class="bi bi-search pe-1"></i><p>{pageData[1]}</p></a>
+                        <a href="/reservations" use:link class="nav-link"><i class="bi bi-search pe-1"></i><p>
+                            {#if pageData[1] != null}
+                                {pageData[1]}
+                            {/if}
+                        </p></a>
                     </li>
                     {/if}
                     {#if !checkCurrentUser()}
                     <li class="nav-item">
-                        <a href="/signinPage" use:link class="nav-link"><i class="bi bi-person-circle pe-1"></i><p>{pageData[2]}</p></a>
+                        <a href="/signinPage" use:link class="nav-link"><i class="bi bi-person-circle pe-1"></i><p>
+                            {#if pageData[2] != null}
+                                {pageData[2]}
+                            {/if}
+                        </p></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/LoginPage" use:link class="nav-link"><i class="bi bi-box-arrow-in-right pe-1"></i><p>{pageData[3]}</p></a>
+                        <a href="/LoginPage" use:link class="nav-link"><i class="bi bi-box-arrow-in-right pe-1"></i><p>
+                            {#if pageData[3] != null}
+                                {pageData[3]}
+                            {/if}
+                        </p></a>
                     </li>
                     {/if}
                     {#if checkCurrentUser()}
@@ -66,16 +82,40 @@
                                     <i class="bi bi-person-circle pe-1"></i>
                                 </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" href="/profilePage" use:link><i class="bi bi-person-check-fill"></i> {pageData[4]}</a></li>
-                                <li><a class="dropdown-item" href="/accountSettings" use:link><i class="bi bi-gear-fill"></i> {pageData[5]}</a></li>
-                                <li><a class="dropdown-item" href="/walletPage" use:link><i class="bi bi-wallet-fill"></i> {pageData[6]}</a></li>
-                                <li><a class="dropdown-item" href="/myBillsPage" use:link><i class="bi bi-receipt"></i> {pageData[7]}</a></li>
-                                <li><a class="dropdown-item" href="/myTravels" use:link><i class="bi bi-geo"></i> {pageData[8]}</a></li>
+                                <li><a class="dropdown-item" href="/profilePage" use:link><i class="bi bi-person-check-fill"></i> 
+                                    {#if pageData[4] != null}
+                                        {pageData[4]}
+                                    {/if}
+                                </a></li>
+                                <li><a class="dropdown-item" href="/accountSettings" use:link><i class="bi bi-gear-fill"></i> 
+                                    {#if pageData[5] != null}
+                                        {pageData[5]}
+                                    {/if}
+                                </a></li>
+                                <li><a class="dropdown-item" href="/walletPage" use:link><i class="bi bi-wallet-fill"></i> 
+                                    {#if pageData[6] != null}
+                                        {pageData[6]}
+                                    {/if}
+                                </a></li>
+                                <li><a class="dropdown-item" href="/myBillsPage" use:link><i class="bi bi-receipt"></i> 
+                                    {#if pageData[7] != null}
+                                        {pageData[7]}
+                                    {/if}
+                                </a></li>
+                                <li><a class="dropdown-item" href="/myTravels" use:link><i class="bi bi-geo"></i> 
+                                    {#if pageData[8] != null}
+                                        {pageData[8]}
+                                    {/if}
+                                </a></li>
                                 <li><a class="dropdown-item" href="/" on:click={() => {
                                     delete_cookie("jwt");
                                     delete_cookie("userId");
                                     push('/');
-                                }}><i class="bi bi-x-octagon-fill"></i> {pageData[9]}</a></li>
+                                }}><i class="bi bi-x-octagon-fill"></i> 
+                                {#if pageData[9] != null}
+                                    {pageData[9]}
+                                {/if}                                   
+                                </a></li>
                             </ul>
                             </li>
                         </ul>

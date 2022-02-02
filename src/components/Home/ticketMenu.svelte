@@ -28,9 +28,9 @@
 
     onMount(async () => {
         try {
-            cities = await (await axios.get(citiesUrl)).data[0].citiess;
             pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/HomePage/61f9157fb4961311f09c29ca")).data.ticketSection;
             pageIcon = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/HomePage/61f9157fb4961311f09c29ca")).data.images;
+            cities = await (await axios.get(citiesUrl)).data[0].citiess;
         }
         catch(e) {
             console.log(e);
@@ -58,31 +58,59 @@
     <div class="ticketsection" style="background-image: url({pageIcon[0]});">
         <div class="searchbox">
             <div class="buttons">
-                <button on:click={selectCard} class:active={isActive}><img src={busIcon} alt="">{pageData[0]}</button>
-                <button on:click={selectCard} class:active={!isActive}><img src={planeIcon} alt="">{pageData[1]}</button>
+                <button on:click={selectCard} class:active={isActive}><img src={busIcon} alt="">
+                    {#if pageData[0] != null}
+                        {pageData[0]}
+                    {/if}
+                </button>
+                <button on:click={selectCard} class:active={!isActive}><img src={planeIcon} alt="">
+                    {#if pageData[1] != null}
+                        {pageData[1]}
+                    {/if}
+                </button>
             </div>
             <ul>
                 {#if showCard}
                 <li>
                     <div class="card">
                         <form class="form fs-5">
-                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[2]}</label>
+                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>
+                                {#if pageData[2] != null}
+                                    {pageData[2]}
+                                {/if}
+                            </label>
                             <select id="kalkis" class="py-3 mb-3" >
                                 {#each cities as city}
                                 <option id="departure">{city}</option>
                                 {:else}
-                                <option value="veritabanı">{pageData[4]}</option>
+                                <option value="veritabanı">
+                                    {#if pageData[4] != null}
+                                        {pageData[4]}
+                                    {/if}
+                                </option>
                                 {/each}
                             </select>
-                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[3]}</label>
+                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>
+                                {#if pageData[3] != null}
+                                    {pageData[3]}
+                                {/if}
+                            </label>
                             <select id="varis" class="py-3 mb-3">
                                 {#each cities as city}
                                 <option id="arrival">{city}</option>
                                 {:else}
-                                <option value="veritabanı">{pageData[4]}</option>
+                                <option value="veritabanı">
+                                    {#if pageData[4] != null}
+                                        {pageData[4]}
+                                    {/if}
+                                </option>
                                 {/each}
                             </select>
-                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>{pageData[5]}</label>
+                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>
+                                {#if pageData[5] != null}
+                                    {pageData[5]}
+                                {/if}
+                            </label>
                             <input type="date" id="tarih" class="p-3" required />
                             <button type="button" class="btn btn-dark mt-4 p-3 fs-4" id="button" on:click={() => {
                                 if(dateChecker() == true) {
@@ -91,7 +119,11 @@
                                 else {
                                     console.log("tarih boş");
                                 }
-                            }}>{pageData[6]}</button>
+                            }}>
+                            {#if pageData[6] != null}
+                                {pageData[6]}
+                            {/if}
+                        </button>
                         </form>
                     </div>
                 </li>
@@ -100,23 +132,43 @@
                 <li>
                     <div class="card">
                         <form class="form fs-5">
-                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[2]}</label>
+                            <label for="kalkis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>
+                                {#if pageData[2] != null}
+                                    {pageData[2]}
+                                {/if}
+                            </label>
                             <select id="kalkis" class="py-3 mb-3" >
                                 {#each cities as city}
                                 <option id="departure">{city}</option>
                                 {:else}
-                                <option value="veritabanı">{pageData[4]}</option>
+                                <option value="veritabanı">
+                                    {#if pageData[4] != null}
+                                        {pageData[4]}
+                                    {/if}
+                                </option>
                                 {/each}
                             </select>
-                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>{pageData[3]}</label>
+                            <label for="varis" class="fs-4 pb-1"><i class="bi bi-geo-alt-fill p-1"></i>
+                                {#if pageData[3] != null}
+                                    {pageData[3]}
+                                {/if}
+                            </label>
                             <select id="varis" class="py-3 mb-3">
                                 {#each cities as city}
                                 <option id="arrival">{city}</option>
                                 {:else}
-                                <option value="veritabanı">{pageData[4]}</option>
+                                <option value="veritabanı">
+                                    {#if pageData[4] != null}
+                                        {pageData[4]}
+                                    {/if}
+                                </option>
                                 {/each}
                             </select>
-                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>{pageData[5]}</label>
+                            <label for="tarih" class="fs-4"><i class="bi bi-calendar-fill p-1 pb-1"></i>
+                                {#if pageData[5] != null}
+                                    {pageData[5]}
+                                {/if}
+                            </label>
                             <input type="date" id="tarih" class="p-3" required />
                             <button type="button" class="btn btn-dark mt-4 p-3 fs-4" id="button" on:click={() => {
                                 if(dateChecker() == true) {
@@ -125,7 +177,11 @@
                                 else {
                                     console.log("tarih boş");
                                 }
-                            }}>{pageData[7]}</button>
+                            }}>
+                            {#if pageData[7] != null}
+                                {pageData[7]}
+                            {/if}
+                            </button>
                         </form>
                     </div>
                 </li>

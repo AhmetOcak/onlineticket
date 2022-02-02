@@ -31,11 +31,31 @@
     <div class="card text-light bg-secondary mb-3">
         <div class="card-header fs-4">{companyName}</div>
         <div class="card-body">
-            <h5 class="card-title">{text[0]} {userName}</h5>
-            <p class="card-text">{text[1]} {ticketID}</p>
-            <p class="card-text">{text[2]} {billPrice} TL</p>
-            <p class="card-text">{text[3]} {date}</p>
-            <p class="card-text">{text[4]} {purchasePlace}</p>
+            <h5 class="card-title">
+                {#if text[0] != null}
+                    {text[0]} {userName}
+                {/if}  
+            </h5>
+            <p class="card-text">
+                {#if text[1] != null}
+                    {text[1]} {ticketID}
+                {/if}
+            </p>
+            <p class="card-text">
+                {#if text[2] != null}
+                    {text[2]} {billPrice} TL
+                {/if}
+            </p>
+            <p class="card-text">
+                {#if text[3] != null}
+                    {text[3]} {date}
+                {/if}
+            </p>
+            <p class="card-text">
+                {#if text[4] != null}
+                    {text[4]} {purchasePlace}
+                {/if}
+            </p>
         </div>
     </div>
 </main>
