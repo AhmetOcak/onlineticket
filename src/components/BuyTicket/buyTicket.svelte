@@ -34,9 +34,15 @@
     let currentBalance = 0;
     let newBalance = 0;
     let exchangeRate = 0;
+    let pageData = " ";
 
     onMount(async () => {
         try{
+            pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/BuyTicketComp/61f91f67b4961311f09c29d6")).data.text;
+            let explanation = document.getElementById("explanation");
+            explanation.innerHTML = pageData[3];
+            let littleExp = document.getElementById("littleExp");
+            littleExp.innerHTML = pageData[5]
             let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
             currentBalance = (await axios.get(walletUrl)).data.balance;
             currentBalance = currentBalance / (await getExchangeRate());
@@ -197,24 +203,32 @@
         
         {#if showUserInfo}
         <div class="card text-dark bg-light mb-3" id="passengerInfo">
-            <div class="card-header">Yolcu Bilgileri</div>
+            <div class="card-header">
+                {#if pageData[0] != null}
+                    {pageData[0]}
+                {/if}
+            </div>
             <div class="">
                 <div class="card-body d-flex flex-column">  
-                    <label for="name">Adı Soyadı</label>
+                    <label for="name">
+                        {#if pageData[1] != null}
+                            {pageData[1]}
+                        {/if}
+                    </label>
                     <input type="text" id="name" placeholder="Doldurulması zorunludur" bind:value={ppassengerName} required>
                 </div>
                 <div class="card-body d-flex flex-column">
-                    <label for="tc">T.C. Kimlik No</label>
+                    <label for="tc">
+                        {#if pageData[2] != null}
+                            {pageData[2]}
+                        {/if}
+                    </label>
                     <input type="number" id="tc" placeholder="Doldurulması zorunludur" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" bind:value={ppassengerTc} required>
                 </div>
             </div>
             <div class="d-flex justify-content-center ms-3 me-3 mt-2">
-                <p class="fs-5">
-                    Ödeme işlemi yalnızca <b>onlinepay cüzdanım</b> üzerinden gerçekleştirilebilir.
-                    Eğer cüzdanınızda bakiye yoksa sağ taraftaki bölümde girdiğiniz kart bilgileri 
-                    kullanılarak cüzdanınıza satın almak istediğiniz biletin ücreti kadar para yükleme
-                    işlemi yapılır ve ödeme işlemi cüzdanınız üzerinden tamamlanır. Daha hızlı bir işlem
-                    deneyimi için cüzdanınıza bakiye ekleme işlemini <b>Cüzdanım</b> sayfasında yapabilirsiniz.
+                <p class="fs-5" id="explanation">
+                    
                 </p>
             </div>
             <div class="d-flex justify-content-center mt-4">
@@ -258,7 +272,11 @@
         {/if}
         <div class="space p-3"></div>
         <div class="card text-dark bg-light mb-3" id="cardInfo">
-            <div class="card-header">Ödeme Bilgileri</div>
+            <div class="card-header">
+                {#if pageData[4] != null}
+                    {pageData[4]}
+                {/if}
+            </div>
             <div class="">
                 <div class="card-body d-flex flex-row justify-content-around">
                     <img src={masterCard} alt="">
@@ -269,26 +287,43 @@
                     <div class="card-body d-flex flex-row justify-content-start">
                         <div class="card text-dark d-flex flex-row" style="max-width: 25rem; max-height: 10vh; background-image: linear-gradient(to right, rgb(15, 12, 41, 0.9), rgb(48, 43, 99, 0.9), rgb(36, 36, 62, 0.9));" id="card">
                             <div class="d-flex flex-column justify-content-center align-items-center">
-                                <h6 class="ms-2" style="color: pink;">onlinepay <br> cüzdanım</h6>
+                                <h6 class="ms-2" style="color: pink;" id="littleExp">
+                                </h6>  
                             </div>
                             <div class="card-body">
-                                <h6 class="card-title" style="color: aliceblue;">Toplam Bakiye</h6>
+                                <h6 class="card-title" style="color: aliceblue;">
+                                    {#if pageData[6] != null}
+                                        {pageData[6]}
+                                    {/if}
+                                </h6>
                                 <p class="card-text text-warning fs-6">{currentBalance + " " + getCookie("currency")}</p>
                             </div>
                         </div>
                     </div>
                 {/if}
                 <div class="card-body d-flex flex-column" style="width: 90%;">
-                    <label for="cardNo">Kart Numarası</label>
+                    <label for="cardNo">
+                        {#if pageData[7] != null}
+                            {pageData[7]}
+                        {/if}
+                    </label>
                     <input type="number" id="cardNo" placeholder="•••• •••• •••• ••••" maxlength="16" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required autocomplete="cc-csc" bind:value={creditCardNo}> 
                 </div>
                 <div class="card-body d-flex flex-column" style="width: 90%;">
-                    <label for="cardUserInfo">Kart Üzerindeki İsim</label>
+                    <label for="cardUserInfo">
+                        {#if pageData[8] != null}
+                            {pageData[8]}
+                        {/if}
+                    </label>
                     <input type="text" id="cardUserInfo" placeholder="Kart sahibinin adı ve soyadı" required bind:value={creditCardUserName}>
                 </div>
                 <div class="card-body d-flex flex-row justify-content-between" style="width: 80%;">
                     <div class="card-body d-flex flex-column">
-                        <label for="last">Son Kullanma Tarihi</label>
+                        <label for="last">
+                            {#if pageData[9] != null}
+                                {pageData[9]} 
+                            {/if}
+                        </label>
                         <select name='expireMM' id='expireMM' required bind:value={month}>
                             <option value=''>Ay</option>
                             <option value='01'>Ocak</option>
@@ -314,20 +349,39 @@
                         </select> 
                     </div>
                     <div class="card-body d-flex flex-column" style="width: 40%;">
-                        <label for="cvc2">CVC2</label>
+                        <label for="cvc2">
+                            {#if pageData[10] != null} 
+                                {pageData[10]} 
+                            {/if}
+                        </label>
                         <input type="number" id="cvc2" placeholder="•••" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="3" bind:value={cvc2} required>
                     </div>
                 </div>
                 {#if walletPageButton} <!-- wallet view button -->
                     <div class="card-body d-flex flex-column" style="width: 90%;">
-                        <label for="money">Yüklenecek Tutar</label>
+                        <label for="money">
+                            {#if pageData[11] != null}  
+                                {pageData[11]}
+                            {/if}
+                        </label>
                         <input type="number" placeholder="örnek: 100" id="money" bind:value={newBalance} required>
                     </div>
                 {/if}
                 <div class="form-check ms-5 mb-5 me-5">
                     <label class="form-check-label" for="flexCheckDefault">
                         <input class="form-check-input" type="checkbox" id="flexCheckDefault" required>
-                        <a href="/obfPage" use:link><b>Ön Bilgilendirme Formu'nu</b></a>, <a href="/mssPage" use:link><b>Mesafeli Satış Sözleşmesi'ni</b></a> okudum ve onaylıyorum.
+                        <a href="/obfPage" use:link><b>
+                            {#if pageData[12] != null} 
+                                {pageData[12]}
+                            {/if}
+                        </b></a>, <a href="/mssPage" use:link><b>
+                            {#if pageData[13] != null} 
+                                {pageData[13]}
+                            {/if}
+                        </b></a> 
+                        {#if pageData[14] != null} 
+                            {pageData[14]}
+                        {/if}
                     </label>
                 </div>
             </div>
@@ -365,7 +419,11 @@
                                 });
                             }
                         }
-                    }}>TL Yükle</button>
+                    }}>
+                    {#if pageData[15] != null} 
+                        {pageData[15]}
+                    {/if}    
+                </button>
                 </div>
             {/if}
             {#if loading == true}
