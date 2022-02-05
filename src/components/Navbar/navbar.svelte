@@ -15,11 +15,20 @@
     }
 
     function checkCurrentUser() {
-        if(document.cookie.length <= 13) {
+        if(getCookie("jwt") == null) {
             return false;
         }else {
             return true;
         }
+    }
+
+    function getCookie(cookieName) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+            let [key,value] = el.split('=');
+            cookie[key.trim()] = value;
+        })
+    return cookie[cookieName];
     }
 
     onMount(async () => {
