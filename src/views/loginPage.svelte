@@ -44,7 +44,6 @@
         try{
           pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/LoginPage/61f9160ab4961311f09c29cb")).data.text;
           pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/LoginPage/61f9160ab4961311f09c29cb")).data.images;
-          console.log(pageData);
         }catch(e) {
             console.log(e);
         } 
