@@ -3,6 +3,7 @@
   import axios from 'axios';
   import { push } from 'svelte-spa-router';
   import { onMount } from 'svelte';
+  import { toast } from '@zerodevx/svelte-toast'
 
   let userEmail;
   let userPassword;
@@ -19,10 +20,27 @@
       headers: {
         "Content-Type": "application/json"
       }
+    }).then((result) => {
+      document.cookie = `jwt=${result.data.message}`;
+      getUserByCookie();
+      setTimeout(() => {
+                    push('/');
+                }, 3000);
+      toast.push('Giriş başarılı!', {
+                    theme: {
+                        '--toastBackground': '#48BB78',
+                        '--toastBarBackground': '#2F855A'
+                    }
+                });
+    }).catch((e) => {
+      console.log(e);
+      toast.push('E-mail ya da şifre yanlış!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
+                });
     });
-    document.cookie = `jwt=${cookie.data.message}`;
-    getUserByCookie();
-    push('#/');
   }
 
   function getCookie(cookieName) {

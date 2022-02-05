@@ -99,11 +99,9 @@
 
     function checkCurrentUser() {
         loadingForTicket = true;
-        if(document.cookie == "") {
-            console.log("giriş yapan yok");
+        if(getCookie("jwt") == null) {
             return false;
         }else {
-            console.log("giriş yapan var");
             return true;
         }
     }
@@ -146,6 +144,7 @@
         }
 
         let todayDate = getDate();
+        console.log(todayDate);
         let result = await axios.put(`https://onlineticketbackendapi.azure-api.net/v1/api/Tickets/${userId}/${$selectedTicketId}/${ppassengerName}/${ppassengerTc}/${ticketInfo[0].travelType}/${todayDate}/${ticketInfo[0].companyName}/${userName}/${parseInt(ticketInfo[0].price)}`).then((result) => {
             if(result.status == 204) {
                 loadingForTicket = false;
@@ -176,7 +175,6 @@
                     }
                 });
         });
-        
         
         let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
         balance = (await axios.get(walletUrl)).data.balance;
