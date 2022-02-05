@@ -39,17 +39,19 @@
     onMount(async () => {
         try{
             pageData = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/BuyTicketComp/61f91f67b4961311f09c29d6")).data.text;
-            let explanation = document.getElementById("explanation");
-            explanation.innerHTML = pageData[3];
-            let littleExp = document.getElementById("littleExp");
-            littleExp.innerHTML = pageData[5]
             let walletUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/Wallets/${getCookie("userId")}`;
             currentBalance = (await axios.get(walletUrl)).data.balance;
             currentBalance = currentBalance / (await getExchangeRate());
             currentBalance = Number(currentBalance).toFixed(2);
             let userUrl = `https://onlineticketbackendapi.azure-api.net/v1/api/User/${getCookie("userId")}`;
             userInfo = (await axios.get(userUrl)).data;
-            console.log(userInfo);
+            
+            if(location.href.split("/").pop().split("?").shift() != "walletPage") {
+                let explanation = document.getElementById("explanation");
+                explanation.innerHTML = pageData[3];
+                let littleExp = document.getElementById("littleExp");
+                littleExp.innerHTML = pageData[5] 
+            }
         }catch(e) {
             console.log(e);
             toast.push('Ağ Hatası!', {
@@ -58,7 +60,7 @@
                         '--toastBarBackground': '#C53030'
                     }
                 });
-        } 
+        }
     });
 
     async function getExchangeRate() {
