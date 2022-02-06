@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar/navbar.svelte";
 import axios from 'axios';
 import { onMount } from 'svelte';
 import { toast } from '@zerodevx/svelte-toast'
+import { push } from 'svelte-spa-router';
 
 let reservationId;
 let tcNo;
@@ -61,6 +62,9 @@ async function deleteReservation() {
                     deleteReservation().then((r) => {
                         console.log(result);
                         if(result == 204) {
+                            setTimeout(() => {
+                                push('/');
+                            }, 3000);
             toast.push('İptal işlemi başarılı!', {
                 theme: {
                     '--toastBackground': '#48BB78',
