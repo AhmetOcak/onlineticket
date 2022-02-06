@@ -389,10 +389,20 @@
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     <button type="button" class="btn btn-success btn-sm mb-3" style="width: 20%; height: 4vh;" on:click={() => {
                         if(newBalance == 0 || newBalance == null) {
-                            console.log("invalid balance enter");
+                            toast.push('Lütfen geçerli bir bakiye giriniz!', {
+                                        theme: {
+                                            '--toastBackground': '#F56565',
+                                            '--toastBarBackground': '#C53030'
+                                            }
+                                    });
                         }else {
                             if(creditCardNo == null || creditCardUserName == null || month == "" || year == "" || cvc2 == null) {
-                                console.log("bilgileri doldurunuz");
+                                toast.push('Lütfen bilgileri doldurunuz!', {
+                                        theme: {
+                                            '--toastBackground': '#F56565',
+                                            '--toastBarBackground': '#C53030'
+                                            }
+                                    });
                             }else {
                                 currentBalance = parseInt(currentBalance) + parseInt(newBalance);
                                 loading = true;
