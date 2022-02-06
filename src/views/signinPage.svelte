@@ -17,6 +17,14 @@
     userFirstName = firstName.value;
     userLastName = lastName.value;
   }
+
+  const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
   
   onMount(async () => {
             try{
@@ -56,7 +64,8 @@
               </div>
               <input class="btn solid" type="submit" value="Kayıt Ol" on:click={() => {
                 handleSignInfo();
-                axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/User`, {
+                if(validateEmail(userEmail) != null && userPassword.length >= 5) {
+                  axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/User`, {
                   email: userEmail,
                   password: userPassword,
                   firstName: userFirstName,
@@ -67,6 +76,7 @@
                     "Content-Type": "application/json"
                   }
                 });
+                }
               }}/>
             </form>
           </div>
