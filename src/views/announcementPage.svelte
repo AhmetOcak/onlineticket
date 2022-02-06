@@ -23,24 +23,24 @@ import { onMount } from 'svelte';
     onMount(async () => {
         try{
             pageImage = (await axios.get("https://onlineticketbackendapi.azure-api.net/v1/api/WebsiteData/61f920b048106f21e53235f8")).data.announcement;
-            let faqsUrl1 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d7326de6c2ed71088e4b56`;
-            data1 = (await axios.get(faqsUrl1)).data;
+            let announcementUrl1 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d7326de6c2ed71088e4b56`;
+            data1 = (await axios.get(announcementUrl1)).data;
             title1 = data1.title;
             text1 = data1.text;
-            let faqsUrl2 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d733c7e6c2ed71088e4b57`;
-            data2 = (await axios.get(faqsUrl2)).data;
+            let announcementUrl2 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d733c7e6c2ed71088e4b57`;
+            data2 = (await axios.get(announcementUrl2)).data;
             title2 = data2.title;
             text2 = data2.text;
-            let faqsUrl3 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d73572e6c2ed71088e4b58`;
-            data3 = (await axios.get(faqsUrl3)).data;
+            let announcementUrl3 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d73572e6c2ed71088e4b58`;
+            data3 = (await axios.get(announcementUrl3)).data;
             title3 = data3.title;
             text3 = data3.text;
-            let faqsUrl4 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d73e22e6c2ed71088e4b59`;
-            data4 = (await axios.get(faqsUrl4)).data;
+            let announcementUrl4 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d73e22e6c2ed71088e4b59`;
+            data4 = (await axios.get(announcementUrl4)).data;
             title4 = data4.title;
             text4 = data4.text;
-            let faqsUrl5 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d73fd0e6c2ed71088e4b5b`;
-            data5 = (await axios.get(faqsUrl5)).data;
+            let announcementUrl5 = `https://onlineticketbackendapi.azure-api.net/v1/api/Announcements/61d73fd0e6c2ed71088e4b5b`;
+            data5 = (await axios.get(announcementUrl5)).data;
             title5 = data5.title;
             text5 = data5.text;
         }catch(e) {
