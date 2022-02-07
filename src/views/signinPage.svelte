@@ -2,6 +2,8 @@
   import Navbar from "../components/Navbar/navbar.svelte";
   import axios from 'axios';
   import { onMount } from 'svelte';
+  import { push } from 'svelte-spa-router';
+  import { toast } from '@zerodevx/svelte-toast'
 
   let userEmail;
   let userPassword;
@@ -62,10 +64,11 @@
                 <i class="bi bi-file-lock2"></i>
                 <input type="password" placeholder="Şifre" minlength="5" id="password" required/>
               </div>
-              <input class="btn solid" type="submit" value="Kayıt Ol" on:click={() => {
+              <input class="btn solid" type="button" value="Kayıt Ol" on:click={() => {
                 handleSignInfo();
-                if(validateEmail(userEmail) != null && userPassword.length >= 5) {
-                  axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/User`, {
+                if(validateEmail(userEmail) != null && userPassword.length >= 5 && userEmail.length != 24) {
+                  try{
+                    axios.post(`https://onlineticketbackendapi.azure-api.net/v1/api/User`, {
                   email: userEmail,
                   password: userPassword,
                   firstName: userFirstName,
@@ -75,6 +78,25 @@
                   headers: {
                     "Content-Type": "application/json"
                   }
+                });
+                setTimeout(() => {
+                    push('/');
+                }, 3000);
+                toast.push('Kaydınız başarılı bir şekilde oluşturuldu!', {
+                    theme: {
+                        '--toastBackground': '#48BB78',
+                        '--toastBarBackground': '#2F855A'
+                    }
+                });
+                  }catch(e) {
+                    console.log(e);
+                  }
+                }else {
+                  toast.push('E-mail uygun formatta olmalı, Şifre minimum 5 karakterli olmalı, E-mail 24 karakter olamaz! Lütfen bu şartları kontrol edip tekrar deneyiniz!', {
+                    theme: {
+                        '--toastBackground': '#F56565',
+                        '--toastBarBackground': '#C53030'
+                    }
                 });
                 }
               }}/>
