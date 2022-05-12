@@ -1,3 +1,4 @@
+<!-- Ahmet Ocak -->
 <script>
     export let text;
 </script>

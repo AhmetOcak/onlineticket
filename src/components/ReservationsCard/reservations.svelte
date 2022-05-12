@@ -1,3 +1,4 @@
+<!-- Ahmet Ocak -->
 <script>
     export let departurePlace;
     export let arrivalPlace;
